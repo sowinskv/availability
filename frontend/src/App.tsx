@@ -52,10 +52,7 @@ const HomePage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="p-8 bg-notion-bg-light dark:bg-notion-bg-dark border border-notion-border-light dark:border-notion-border-dark rounded-lg hover:shadow-lg transition-all duration-200">
-          <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mb-4">
-            <span className="text-2xl">📊</span>
-          </div>
+        <div className="p-8 bg-notion-bg-light dark:bg-notion-bg-dark border border-notion-border-light dark:border-notion-border-dark rounded-lg hover:shadow-sm transition-all duration-200">
           <h3 className="text-lg font-semibold text-notion-text-primary-light dark:text-notion-text-primary-dark mb-2">
             team intelligence
           </h3>
@@ -64,10 +61,7 @@ const HomePage: React.FC = () => {
           </p>
         </div>
 
-        <div className="p-8 bg-notion-bg-light dark:bg-notion-bg-dark border border-notion-border-light dark:border-notion-border-dark rounded-lg hover:shadow-lg transition-all duration-200">
-          <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4">
-            <span className="text-2xl">✨</span>
-          </div>
+        <div className="p-8 bg-notion-bg-light dark:bg-notion-bg-dark border border-notion-border-light dark:border-notion-border-dark rounded-lg hover:shadow-sm transition-all duration-200">
           <h3 className="text-lg font-semibold text-notion-text-primary-light dark:text-notion-text-primary-dark mb-2">
             smart planning
           </h3>
@@ -76,10 +70,7 @@ const HomePage: React.FC = () => {
           </p>
         </div>
 
-        <div className="p-8 bg-notion-bg-light dark:bg-notion-bg-dark border border-notion-border-light dark:border-notion-border-dark rounded-lg hover:shadow-lg transition-all duration-200">
-          <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mb-4">
-            <span className="text-2xl">🎯</span>
-          </div>
+        <div className="p-8 bg-notion-bg-light dark:bg-notion-bg-dark border border-notion-border-light dark:border-notion-border-dark rounded-lg hover:shadow-sm transition-all duration-200">
           <h3 className="text-lg font-semibold text-notion-text-primary-light dark:text-notion-text-primary-dark mb-2">
             intelligent allocation
           </h3>

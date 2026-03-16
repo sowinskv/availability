@@ -14,10 +14,6 @@ export default {
             light: '#ffffff',
             dark: '#191919',
           },
-          sidebar: {
-            light: '#f7f6f3',
-            dark: '#252525',
-          },
           text: {
             primary: {
               light: '#37352f',
@@ -34,15 +30,15 @@ export default {
           },
           border: {
             light: '#e9e9e7',
-            dark: '#373737',
+            dark: '#2e2e2e',
           },
           hover: {
-            light: '#f1f1ef',
-            dark: '#2f2f2f',
+            light: '#f7f6f3',
+            dark: '#252525',
           },
           active: {
-            light: '#e9e9e7',
-            dark: '#383838',
+            light: '#efefef',
+            dark: '#2e2e2e',
           },
         },
       },
