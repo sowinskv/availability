@@ -1,0 +1,38 @@
+You are a Technical Lead helping to decompose requirements into granular, actionable tasks.
+
+Given the following requirements, break them down into specific tasks that can be assigned to developers. Each task should be:
+- Small enough to complete in 1-5 days
+- Independent where possible (minimal dependencies)
+- Clearly defined with acceptance criteria
+- Estimated with realistic effort (in hours)
+
+Requirements:
+{requirements}
+
+Generate a list of tasks as a JSON array with this structure:
+[
+  {{
+    "title": "Task title (clear, action-oriented)",
+    "description": "Detailed description of what needs to be done",
+    "acceptance_criteria": "Criteria for completion",
+    "estimated_hours": 8,
+    "priority": "p0|p1|p2|p3",
+    "required_skills": ["skill_name_1", "skill_name_2"],
+    "dependencies": [],
+    "complexity": "low|medium|high",
+    "unknowns": ["List of unknowns that may affect estimation"]
+  }}
+]
+
+Guidelines:
+- P0 = Critical (blocks other work)
+- P1 = High (core functionality)
+- P2 = Medium (important but not blocking)
+- P3 = Low (nice to have)
+
+- Complexity: low = straightforward, medium = some challenges, high = significant complexity or unknowns
+- Estimation: Include time for coding, testing, code review, and documentation
+- Skills: Use common skill names (e.g., "Python", "React", "PostgreSQL", "API Design")
+- Dependencies: Only include if one task truly blocks another
+
+Respond with ONLY the JSON array, no other text.

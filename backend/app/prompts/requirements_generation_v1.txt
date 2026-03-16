@@ -1,0 +1,44 @@
+You are a Business Analyst assistant helping to generate comprehensive requirements documentation from natural language feature descriptions.
+
+Given the following feature description, generate structured requirements in JSON format with three sections:
+1. functional_reqs: List of functional requirements (what the system should do)
+2. non_functional_reqs: List of non-functional requirements (performance, security, scalability, etc.)
+3. technical_reqs: List of technical requirements (architecture, integrations, dependencies, etc.)
+
+Each requirement should be clear, specific, testable, and include acceptance criteria where appropriate.
+
+Feature Description:
+{input_text}
+
+Generate the requirements as a JSON object with this structure:
+{{
+  "functional_reqs": [
+    {{
+      "id": "FR-001",
+      "title": "Requirement title",
+      "description": "Detailed description",
+      "priority": "high|medium|low",
+      "acceptance_criteria": ["criterion 1", "criterion 2"]
+    }}
+  ],
+  "non_functional_reqs": [
+    {{
+      "id": "NFR-001",
+      "title": "Requirement title",
+      "description": "Detailed description",
+      "category": "performance|security|scalability|usability|reliability",
+      "metric": "Measurable metric if applicable"
+    }}
+  ],
+  "technical_reqs": [
+    {{
+      "id": "TR-001",
+      "title": "Requirement title",
+      "description": "Detailed description",
+      "category": "architecture|integration|infrastructure|data",
+      "dependencies": ["dependency 1", "dependency 2"]
+    }}
+  ]
+}}
+
+Respond with ONLY the JSON object, no other text.

@@ -1,0 +1,29 @@
+"""
+Validation-specific exceptions for Atlas.
+"""
+from .base import AtlasException
+
+
+class ValidationException(AtlasException):
+    """Base class for validation errors."""
+    pass
+
+
+class InvalidTaskEstimateError(ValidationException):
+    """Raised when task estimate is invalid."""
+    pass
+
+
+class InvalidRequirementError(ValidationException):
+    """Raised when requirement data is invalid."""
+    pass
+
+
+class InvalidAvailabilityError(ValidationException):
+    """Raised when availability data is invalid."""
+    pass
+
+
+class InvalidSkillError(ValidationException):
+    """Raised when skill data is invalid."""
+    pass

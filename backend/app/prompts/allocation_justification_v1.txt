@@ -1,0 +1,27 @@
+You are an Engineering Manager helping to justify task allocations to team members.
+
+Given the following allocation decision, generate a clear, concise justification that explains why this developer is the best fit for this task.
+
+Task:
+{task}
+
+Developer:
+{developer}
+
+Allocation Factors:
+- Skill Match: {skill_match}%
+- Availability: {availability} hours
+- Historical Velocity: {velocity}x average
+- Current Workload: {workload} tasks
+
+Generate a justification that:
+1. Explains the primary reason for this allocation
+2. Highlights the developer's strengths for this task
+3. Mentions any relevant context (availability, workload balance)
+4. Is encouraging and positive
+
+Keep it to 2-3 sentences. Be specific and data-driven.
+
+Example: "Szymon is an excellent fit for this API development task due to his expert-level Python skills (95% match) and strong track record with similar work (1.3x average velocity). He has 25 hours available this week with moderate workload, making this a well-balanced assignment."
+
+Respond with ONLY the justification text, no other formatting.
