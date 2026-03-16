@@ -2,11 +2,17 @@ import React, { useState } from 'react';
 import { VoiceRecorder } from '../components/VoiceRecorder';
 import { useAvailability } from '../hooks/useAvailability';
 import { format } from 'date-fns';
-import { Calendar, Check, X, Clock } from 'lucide-react';
 
 export const AvailabilityPage: React.FC = () => {
   const { availabilities, isLoading, createFromVoice, approveAvailability, declineAvailability } = useAvailability();
   const [showRecorder, setShowRecorder] = useState(false);
+  const [showManualForm, setShowManualForm] = useState(false);
+  const [formData, setFormData] = useState({
+    startDate: '',
+    endDate: '',
+    hoursPerDay: '8',
+    type: 'vacation' as 'vacation' | 'sick' | 'partial' | 'available',
+  });
 
   const handleRecordingComplete = async (audioBlob: Blob) => {
     try {
@@ -19,17 +25,12 @@ export const AvailabilityPage: React.FC = () => {
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'approved':
-        return 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400';
-      case 'declined':
-        return 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400';
-      case 'pending':
-        return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400';
-      default:
-        return 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300';
-    }
+  const handleManualSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: Wire up to API
+    console.log('Manual submission:', formData);
+    alert('Manual submission - API integration pending');
+    setShowManualForm(false);
   };
 
   const getTypeLabel = (type: string) => {
@@ -57,12 +58,106 @@ export const AvailabilityPage: React.FC = () => {
           Availability
         </h2>
 
-        <button
-          onClick={() => setShowRecorder(!showRecorder)}
-          className="mb-8 px-6 py-2 bg-black dark:bg-white text-white dark:text-black rounded-full text-sm hover:opacity-90 transition-opacity"
-        >
-          {showRecorder ? 'Hide Recorder' : 'Record Availability'}
-        </button>
+        <div className="flex gap-3 mb-8">
+          <button
+            onClick={() => {
+              setShowManualForm(!showManualForm);
+              setShowRecorder(false);
+            }}
+            className="px-6 py-2 bg-black dark:bg-white text-white dark:text-black rounded-full text-sm hover:opacity-90 transition-opacity"
+          >
+            {showManualForm ? 'Hide Form' : 'Add Manually'}
+          </button>
+          <button
+            onClick={() => {
+              setShowRecorder(!showRecorder);
+              setShowManualForm(false);
+            }}
+            className="px-6 py-2 border border-black dark:border-white text-black dark:text-white rounded-full text-sm hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
+          >
+            {showRecorder ? 'Hide Recorder' : 'Voice Input'}
+          </button>
+        </div>
+
+        {showManualForm && (
+          <div className="mb-12">
+            <form onSubmit={handleManualSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark mb-2">
+                    Start Date
+                  </label>
+                  <input
+                    type="date"
+                    value={formData.startDate}
+                    onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                    required
+                    className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-notion-border-light dark:border-notion-border-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white text-notion-text-primary-light dark:text-notion-text-primary-dark"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark mb-2">
+                    End Date
+                  </label>
+                  <input
+                    type="date"
+                    value={formData.endDate}
+                    onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                    required
+                    className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-notion-border-light dark:border-notion-border-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white text-notion-text-primary-light dark:text-notion-text-primary-dark"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark mb-2">
+                    Type
+                  </label>
+                  <select
+                    value={formData.type}
+                    onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
+                    className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-notion-border-light dark:border-notion-border-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white text-notion-text-primary-light dark:text-notion-text-primary-dark"
+                  >
+                    <option value="vacation">Vacation</option>
+                    <option value="sick">Sick Leave</option>
+                    <option value="partial">Partial Availability</option>
+                    <option value="available">Available</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark mb-2">
+                    Hours per Day
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="24"
+                    step="0.5"
+                    value={formData.hoursPerDay}
+                    onChange={(e) => setFormData({ ...formData, hoursPerDay: e.target.value })}
+                    required
+                    className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-notion-border-light dark:border-notion-border-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white text-notion-text-primary-light dark:text-notion-text-primary-dark"
+                  />
+                </div>
+              </div>
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="submit"
+                  className="px-6 py-2 bg-black dark:bg-white text-white dark:text-black rounded-full text-sm hover:opacity-90 transition-opacity"
+                >
+                  Submit
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowManualForm(false)}
+                  className="px-6 py-2 text-notion-text-secondary-light dark:text-notion-text-secondary-dark hover:text-notion-text-primary-light dark:hover:text-notion-text-primary-dark transition-colors text-sm"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
 
         {showRecorder && (
           <div className="mb-12">
@@ -88,7 +183,7 @@ export const AvailabilityPage: React.FC = () => {
                 <h3 className="text-lg font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark mb-1">
                   {getTypeLabel(availability.type)}
                 </h3>
-                <p className="text-sm text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">
+                <p className="text-sm text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark capitalize">
                   {availability.status}
                 </p>
               </div>
@@ -96,29 +191,29 @@ export const AvailabilityPage: React.FC = () => {
               <div className="space-y-3">
                 <p className="text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
                   {format(new Date(availability.start_date), 'MMM d, yyyy')} - {format(new Date(availability.end_date), 'MMM d, yyyy')}
-                  <span className="text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark ml-2">
-                    • {availability.hours_per_day}h/day
-                  </span>
+                </p>
+
+                <p className="text-sm text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">
+                  {availability.hours_per_day}h per day
                 </p>
 
                 {availability.transcription_text && (
-                  <p className="text-sm text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">
-                    {availability.transcription_text}
+                  <p className="text-sm text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark italic">
+                    "{availability.transcription_text}"
                   </p>
                 )}
 
                 {availability.status === 'pending' && (
-                  <div className="flex gap-2 pt-2">
+                  <div className="flex gap-3 pt-2">
                     <button
                       onClick={() => approveAvailability.mutate(availability.id)}
-                      className="text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark hover:text-notion-text-primary-light dark:hover:text-notion-text-primary-dark transition-colors"
+                      className="text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark hover:text-notion-text-primary-light dark:hover:text-notion-text-primary-dark transition-colors underline"
                     >
                       Approve
                     </button>
-                    <span className="text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">•</span>
                     <button
                       onClick={() => declineAvailability.mutate(availability.id)}
-                      className="text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark hover:text-notion-text-primary-light dark:hover:text-notion-text-primary-dark transition-colors"
+                      className="text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark hover:text-notion-text-primary-light dark:hover:text-notion-text-primary-dark transition-colors underline"
                     >
                       Decline
                     </button>

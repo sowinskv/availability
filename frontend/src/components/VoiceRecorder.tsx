@@ -64,35 +64,41 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplet
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 p-8">
-      <div className="text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
-        {isRecording ? (
-          <span className="flex items-center gap-2 font-medium">
-            <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-            recording: {formatTime(recordingTime)}
-          </span>
-        ) : (
-          'click the microphone to start recording'
-        )}
+    <div className="p-6 border border-notion-border-light dark:border-notion-border-dark rounded-lg">
+      <div className="flex items-center gap-4 mb-4">
+        <button
+          onClick={isRecording ? stopRecording : startRecording}
+          className={`p-4 rounded-full transition-all ${
+            isRecording
+              ? 'bg-black dark:bg-white'
+              : 'border-2 border-black dark:border-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black'
+          }`}
+        >
+          {isRecording ? (
+            <StopCircle size={24} className="text-white dark:text-black" />
+          ) : (
+            <Mic size={24} className="text-black dark:text-white" />
+          )}
+        </button>
+
+        <div className="flex-1">
+          {isRecording ? (
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+              <span className="text-sm text-notion-text-primary-light dark:text-notion-text-primary-dark">
+                Recording: {formatTime(recordingTime)}
+              </span>
+            </div>
+          ) : (
+            <p className="text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
+              Click to start recording your availability
+            </p>
+          )}
+        </div>
       </div>
 
-      <button
-        onClick={isRecording ? stopRecording : startRecording}
-        className={`p-8 rounded-full transition-all ${
-          isRecording
-            ? 'bg-red-500 hover:bg-red-600 shadow-red-500/30'
-            : 'bg-blue-500 hover:bg-blue-600 shadow-blue-500/30'
-        } text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-95`}
-      >
-        {isRecording ? (
-          <StopCircle size={40} />
-        ) : (
-          <Mic size={40} />
-        )}
-      </button>
-
-      <p className="text-xs text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark text-center max-w-md leading-relaxed">
-        speak your availability information naturally. include dates, type (vacation, sick leave), and any other details.
+      <p className="text-xs text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">
+        Speak naturally - include dates, type (vacation, sick leave), and any details.
       </p>
     </div>
   );
