@@ -1,8 +1,11 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { Sidebar } from './components/Sidebar';
+import { LandingPage } from './pages/LandingPage';
+import { LoginPage } from './pages/LoginPage';
 import { AvailabilityPage } from './pages/AvailabilityPage';
 import { RequirementsPage } from './pages/RequirementsPage';
 import { TasksPage } from './pages/TasksPage';
@@ -16,25 +19,49 @@ const queryClient = new QueryClient({
   },
 });
 
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
+};
+
+const AuthenticatedApp: React.FC = () => {
+  return (
+    <ThemeProvider>
+      <div className="flex h-screen bg-notion-bg-light dark:bg-notion-bg-dark overflow-hidden">
+        <Sidebar />
+        <main className="flex-1 overflow-auto">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/availability" element={<AvailabilityPage />} />
+            <Route path="/requirements" element={<RequirementsPage />} />
+            <Route path="/tasks" element={<TasksPage />} />
+            <Route path="/allocations" element={<AllocationsPage />} />
+          </Routes>
+        </main>
+      </div>
+    </ThemeProvider>
+  );
+};
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
+      <AuthProvider>
         <Router>
-          <div className="flex h-screen bg-notion-bg-light dark:bg-notion-bg-dark overflow-hidden">
-            <Sidebar />
-            <main className="flex-1 overflow-auto">
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/availability" element={<AvailabilityPage />} />
-                <Route path="/requirements" element={<RequirementsPage />} />
-                <Route path="/tasks" element={<TasksPage />} />
-                <Route path="/allocations" element={<AllocationsPage />} />
-              </Routes>
-            </main>
-          </div>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/app/*"
+              element={
+                <ProtectedRoute>
+                  <AuthenticatedApp />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
         </Router>
-      </ThemeProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
