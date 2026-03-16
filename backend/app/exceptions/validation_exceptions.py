@@ -1,10 +1,10 @@
 """
-Validation-specific exceptions for Atlas.
+Validation-specific exceptions for Our process tool.
 """
-from .base import AtlasException
+from .base import Our process toolException
 
 
-class ValidationException(AtlasException):
+class ValidationException(Our process toolException):
     """Base class for validation errors."""
     pass
 

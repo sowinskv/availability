@@ -1,3 +1,3 @@
 """
-Background tasks for Atlas.
+Background tasks for Our process tool.
 """

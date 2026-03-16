@@ -1,10 +1,10 @@
 """
-Base exception classes for Atlas.
+Base exception classes for Our process tool.
 """
 
 
-class AtlasException(Exception):
-    """Base exception for all Atlas-specific errors."""
+class Our process toolException(Exception):
+    """Base exception for all Our process tool-specific errors."""
 
     def __init__(self, message: str, details: dict = None):
         self.message = message

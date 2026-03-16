@@ -1,5 +1,5 @@
 """
-Project model for Atlas.
+Project model for Our process tool.
 """
 from sqlalchemy import Column, String, Date, Enum
 from sqlalchemy.dialects.postgresql import UUID

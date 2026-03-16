@@ -4,18 +4,18 @@ services:
   # PostgreSQL database
   db:
     image: postgres:15-alpine
-    container_name: atlas-db
+    container_name: processtool-db
     environment:
-      POSTGRES_DB: atlas
-      POSTGRES_USER: atlas
-      POSTGRES_PASSWORD: atlas_dev_password
+      POSTGRES_DB: processtool
+      POSTGRES_USER: processtool
+      POSTGRES_PASSWORD: processtool_dev_password
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ../db/migrations:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U atlas"]
+      test: ["CMD-SHELL", "pg_isready -U processtool"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -23,7 +23,7 @@ services:
   # Redis cache
   redis:
     image: redis:7-alpine
-    container_name: atlas-redis
+    container_name: processtool-redis
     ports:
       - "6379:6379"
     healthcheck:
@@ -37,9 +37,9 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    container_name: atlas-api
+    container_name: processtool-api
     environment:
-      DATABASE_URL: postgresql://atlas:atlas_dev_password@db:5432/atlas
+      DATABASE_URL: postgresql://processtool:processtool_dev_password@db:5432/processtool
       REDIS_URL: redis://redis:6379/0
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}

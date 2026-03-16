@@ -1,5 +1,5 @@
 """
-Requirement model for Atlas.
+Requirement model for Our process tool.
 """
 from sqlalchemy import Column, String, Text, Enum, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID, JSONB

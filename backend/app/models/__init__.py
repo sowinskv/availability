@@ -1,5 +1,5 @@
 """
-Database models for Atlas.
+Database models for Our process tool.
 """
 from .base import Base, TimestampMixin
 from .user import User, UserRole

@@ -1,4 +1,4 @@
-# Atlas API Documentation
+# Process Tool API Documentation
 
 Base URL: `http://localhost:8000`
 

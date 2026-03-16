@@ -1,5 +1,5 @@
 """
-Task model for Atlas.
+Task model for Our process tool.
 """
 from sqlalchemy import Column, String, Text, Enum, ForeignKey, Float, Integer
 from sqlalchemy.dialects.postgresql import UUID, ARRAY

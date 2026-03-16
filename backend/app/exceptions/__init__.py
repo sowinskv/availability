@@ -1,7 +1,7 @@
 """
-Exception classes for Atlas.
+Exception classes for Our process tool.
 """
-from .base import AtlasException
+from .base import Our process toolException
 from .llm_exceptions import (
     LLMException,
     MalformedResponseError,
@@ -34,7 +34,7 @@ from .validation_exceptions import (
 )
 
 __all__ = [
-    "AtlasException",
+    "Our process toolException",
     "LLMException",
     "MalformedResponseError",
     "TokenLimitError",

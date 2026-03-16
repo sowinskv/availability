@@ -1,13 +1,13 @@
-# Atlas Implementation Summary
+# Our process tool Implementation Summary
 
 ## What Was Implemented
 
-This implementation created the foundational architecture for Atlas, an AI-powered project planning engine, following the detailed plan provided.
+This implementation created the foundational architecture for Our process tool, an AI-powered project planning engine, following the detailed plan provided.
 
 ### ✅ Backend (Python + FastAPI)
 
 #### Exception Hierarchy
-- **Base Exception**: `AtlasException` with standardized error handling
+- **Base Exception**: `Our process toolException` with standardized error handling
 - **LLM Exceptions**: `MalformedResponseError`, `TokenLimitError`, `ContentPolicyError`, etc.
 - **Integration Exceptions**: `OAuthTokenExpired`, `CalendarSyncError`, `NotionSyncError`, etc.
 - **Allocation Exceptions**: `NoAvailableDeveloperError`, `CircularDependencyError`, `InsufficientCapacityError`

@@ -1,6 +1,6 @@
-# Atlas - Quick Start Guide
+# Our process tool - Quick Start Guide
 
-Get Atlas up and running in 5 minutes!
+Get Our process tool up and running in 5 minutes!
 
 ## Prerequisites
 
@@ -54,7 +54,7 @@ make db-migrate
 
 # Or manually
 for file in db/migrations/*.sql; do
-    docker exec atlas-db psql -U atlas -d atlas -f /docker-entrypoint-initdb.d/$(basename $file)
+    docker exec processtool-db psql -U atlas -d atlas -f /docker-entrypoint-initdb.d/$(basename $file)
 done
 ```
 
@@ -133,36 +133,36 @@ make dev-full
 2. Click "Generate with AI"
 3. Enter: "We need a user authentication system with OAuth and 2FA support"
 4. Click "Generate Requirements"
-5. Atlas will create structured requirements
+5. Our process tool will create structured requirements
 
 ### 3. Test Task Decomposition
 
 1. Go to http://localhost:3000/tasks
 2. Select an approved requirement
 3. Click "Generate Tasks"
-4. Atlas will break it down into actionable tasks
+4. Our process tool will break it down into actionable tasks
 
 ## Troubleshooting
 
 ### API won't start
 ```bash
 # Check logs
-docker logs atlas-api
+docker logs processtool-api
 
 # Restart
-docker restart atlas-api
+docker restart processtool-api
 ```
 
 ### Database connection error
 ```bash
 # Check if database is running
-docker ps | grep atlas-db
+docker ps | grep processtool-db
 
 # Check database logs
-docker logs atlas-db
+docker logs processtool-db
 
 # Restart database
-docker restart atlas-db
+docker restart processtool-db
 ```
 
 ### Frontend errors

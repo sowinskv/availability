@@ -1,4 +1,4 @@
-# Atlas
+# Our process tool
 
 ai-powered project planning engine. transforms spoken ideas into structured requirements, tasks, and smart team allocations.
 

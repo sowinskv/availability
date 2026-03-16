@@ -1,5 +1,5 @@
 """
-Availability model for Atlas.
+Availability model for Our process tool.
 """
 from sqlalchemy import Column, String, Float, Enum, ForeignKey, Date, Text
 from sqlalchemy.dialects.postgresql import UUID

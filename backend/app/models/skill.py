@@ -1,5 +1,5 @@
 """
-Skill models for Atlas.
+Skill models for Our process tool.
 """
 from sqlalchemy import Column, String, Enum, ForeignKey, Float, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID

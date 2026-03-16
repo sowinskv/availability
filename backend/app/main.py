@@ -1,5 +1,5 @@
 """
-Main FastAPI application for Atlas.
+Main FastAPI application for Our process tool.
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -12,14 +12,14 @@ from .api import availability_routes, requirements_routes, tasks_routes, allocat
 async def lifespan(app: FastAPI):
     """Lifecycle management for the application."""
     # Startup
-    print("🚀 Atlas API starting up...")
+    print("🚀 Process Tool API starting up...")
     yield
     # Shutdown
-    print("👋 Atlas API shutting down...")
+    print("👋 Process Tool API shutting down...")
 
 
 app = FastAPI(
-    title="Atlas API",
+    title="Process Tool API",
     description="AI Project Planning Engine",
     version="0.1.0",
     lifespan=lifespan
@@ -45,7 +45,7 @@ app.include_router(allocation_routes.router)
 async def root():
     """Root endpoint."""
     return {
-        "name": "Atlas API",
+        "name": "Process Tool API",
         "version": "0.1.0",
         "status": "running"
     }

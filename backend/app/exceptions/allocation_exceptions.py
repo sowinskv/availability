@@ -1,10 +1,10 @@
 """
-Allocation-specific exceptions for Atlas.
+Allocation-specific exceptions for Our process tool.
 """
-from .base import AtlasException
+from .base import Our process toolException
 
 
-class AllocationException(AtlasException):
+class AllocationException(Our process toolException):
     """Base class for allocation errors."""
     pass
 

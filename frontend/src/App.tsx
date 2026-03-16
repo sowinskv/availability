@@ -24,7 +24,7 @@ function App() {
               <div className="flex justify-between items-center h-16">
                 <div className="flex items-center gap-8">
                   <Link to="/" className="text-xl font-bold text-blue-600">
-                    Atlas
+                    Our process tool
                   </Link>
                   <div className="flex gap-4">
                     <Link
@@ -75,7 +75,7 @@ const HomePage: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 py-16">
       <div className="text-center">
         <h1 className="text-5xl font-bold text-gray-900 mb-4">
-          Welcome to Atlas
+          Welcome to Our process tool
         </h1>
         <p className="text-xl text-gray-600 mb-8">
           AI-Powered Project Planning Engine

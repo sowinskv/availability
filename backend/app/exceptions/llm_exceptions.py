@@ -1,10 +1,10 @@
 """
-LLM-specific exceptions for Atlas.
+LLM-specific exceptions for Our process tool.
 """
-from .base import AtlasException
+from .base import Our process toolException
 
 
-class LLMException(AtlasException):
+class LLMException(Our process toolException):
     """Base class for LLM-related errors."""
     pass
 

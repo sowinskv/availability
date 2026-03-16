@@ -1,8 +1,8 @@
-# Atlas Architecture
+# Our process tool Architecture
 
 ## Overview
 
-Atlas is an AI-powered project planning engine built with event-driven architecture, CQRS pattern, and plugin system for integrations.
+Our process tool is an AI-powered project planning engine built with event-driven architecture, CQRS pattern, and plugin system for integrations.
 
 ## System Architecture
 

@@ -1,5 +1,5 @@
 """
-User model for Atlas.
+User model for Our process tool.
 """
 from sqlalchemy import Column, String, Enum
 from sqlalchemy.dialects.postgresql import UUID

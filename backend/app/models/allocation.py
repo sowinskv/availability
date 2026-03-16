@@ -1,5 +1,5 @@
 """
-Allocation model for Atlas.
+Allocation model for Our process tool.
 """
 from sqlalchemy import Column, Text, Float, ForeignKey, DateTime
 from sqlalchemy.dialects.postgresql import UUID

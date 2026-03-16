@@ -8,7 +8,7 @@ settings = get_settings()
 
 # Create Celery app
 celery_app = Celery(
-    "atlas",
+    "processtool",
     broker=settings.REDIS_URL,
     backend=settings.REDIS_URL
 )

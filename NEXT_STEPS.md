@@ -1,4 +1,4 @@
-# Atlas - Next Steps & Action Plan
+# Our process tool - Next Steps & Action Plan
 
 ## 🎯 Current State
 
