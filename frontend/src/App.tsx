@@ -68,41 +68,36 @@ function App() {
 
 const HomePage: React.FC = () => {
   return (
-    <div className="p-12 max-w-6xl mx-auto animate-fade-in">
-      <div className="mb-12">
-        <h1 className="text-4xl font-bold text-notion-text-primary-light dark:text-notion-text-primary-dark mb-3">
-          Welcome to Our process tool
-        </h1>
-        <p className="text-lg text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
-          ai-powered project planning engine
-        </p>
-      </div>
+    <div className="p-12 max-w-5xl mx-auto">
+      <h2 className="text-sm text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark mb-16">
+        Our services
+      </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="p-8 bg-notion-bg-light dark:bg-notion-bg-dark border border-notion-border-light dark:border-notion-border-dark rounded-lg hover:shadow-sm transition-all duration-200">
-          <h3 className="text-lg font-semibold text-notion-text-primary-light dark:text-notion-text-primary-dark mb-2">
-            team intelligence
+      <div className="space-y-0">
+        <div className="py-8 grid grid-cols-2 gap-8 border-b border-notion-border-light dark:border-notion-border-dark">
+          <h3 className="text-lg font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark">
+            Team Intelligence
           </h3>
-          <p className="text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark leading-relaxed">
-            track availability, skills, and velocity across your team with voice input and calendar sync
+          <p className="text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
+            Track availability, skills, and velocity across your team with voice input and calendar sync.
           </p>
         </div>
 
-        <div className="p-8 bg-notion-bg-light dark:bg-notion-bg-dark border border-notion-border-light dark:border-notion-border-dark rounded-lg hover:shadow-sm transition-all duration-200">
-          <h3 className="text-lg font-semibold text-notion-text-primary-light dark:text-notion-text-primary-dark mb-2">
-            smart planning
+        <div className="py-8 grid grid-cols-2 gap-8 border-b border-notion-border-light dark:border-notion-border-dark">
+          <h3 className="text-lg font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark">
+            Smart Planning
           </h3>
-          <p className="text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark leading-relaxed">
-            generate structured requirements and granular tasks from natural language with ai
+          <p className="text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
+            Generate structured requirements and granular tasks from natural language with AI.
           </p>
         </div>
 
-        <div className="p-8 bg-notion-bg-light dark:bg-notion-bg-dark border border-notion-border-light dark:border-notion-border-dark rounded-lg hover:shadow-sm transition-all duration-200">
-          <h3 className="text-lg font-semibold text-notion-text-primary-light dark:text-notion-text-primary-dark mb-2">
-            intelligent allocation
+        <div className="py-8 grid grid-cols-2 gap-8 border-b border-notion-border-light dark:border-notion-border-dark">
+          <h3 className="text-lg font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark">
+            Intelligent Allocation
           </h3>
-          <p className="text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark leading-relaxed">
-            ai-powered task allocation based on skills, capacity, and historical velocity
+          <p className="text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
+            AI-powered task allocation based on skills, capacity, and historical velocity.
           </p>
         </div>
       </div>
