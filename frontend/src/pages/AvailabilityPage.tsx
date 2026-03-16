@@ -53,12 +53,12 @@ export const AvailabilityPage: React.FC = () => {
 
   return (
     <div className="p-12 max-w-5xl mx-auto">
-      <div className="mb-16">
-        <h2 className="text-sm text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark mb-12">
+      <div className="mb-20">
+        <h1 className="text-3xl font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark mb-12">
           Availability
-        </h2>
+        </h1>
 
-        <div className="flex gap-3 mb-8">
+        <div className="flex gap-3 mb-10">
           <button
             onClick={() => {
               setShowManualForm(!showManualForm);
@@ -80,11 +80,11 @@ export const AvailabilityPage: React.FC = () => {
         </div>
 
         {showManualForm && (
-          <div className="mb-12">
-            <form onSubmit={handleManualSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+          <div className="mb-16 max-w-2xl">
+            <form onSubmit={handleManualSubmit} className="space-y-6">
+              <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark mb-2">
+                  <label className="block text-sm text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark mb-2">
                     Start Date
                   </label>
                   <input
@@ -92,11 +92,11 @@ export const AvailabilityPage: React.FC = () => {
                     value={formData.startDate}
                     onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
                     required
-                    className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-notion-border-light dark:border-notion-border-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white text-notion-text-primary-light dark:text-notion-text-primary-dark"
+                    className="w-full px-4 py-3 bg-transparent border border-notion-border-light dark:border-notion-border-dark rounded text-notion-text-primary-light dark:text-notion-text-primary-dark focus:outline-none focus:border-black dark:focus:border-white transition-colors"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark mb-2">
+                  <label className="block text-sm text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark mb-2">
                     End Date
                   </label>
                   <input
@@ -104,19 +104,19 @@ export const AvailabilityPage: React.FC = () => {
                     value={formData.endDate}
                     onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
                     required
-                    className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-notion-border-light dark:border-notion-border-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white text-notion-text-primary-light dark:text-notion-text-primary-dark"
+                    className="w-full px-4 py-3 bg-transparent border border-notion-border-light dark:border-notion-border-dark rounded text-notion-text-primary-light dark:text-notion-text-primary-dark focus:outline-none focus:border-black dark:focus:border-white transition-colors"
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark mb-2">
+                  <label className="block text-sm text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark mb-2">
                     Type
                   </label>
                   <select
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
-                    className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-notion-border-light dark:border-notion-border-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white text-notion-text-primary-light dark:text-notion-text-primary-dark"
+                    className="w-full px-4 py-3 bg-transparent border border-notion-border-light dark:border-notion-border-dark rounded text-notion-text-primary-light dark:text-notion-text-primary-dark focus:outline-none focus:border-black dark:focus:border-white transition-colors appearance-none cursor-pointer"
                   >
                     <option value="vacation">Vacation</option>
                     <option value="sick">Sick Leave</option>
@@ -125,7 +125,7 @@ export const AvailabilityPage: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark mb-2">
+                  <label className="block text-sm text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark mb-2">
                     Hours per Day
                   </label>
                   <input
@@ -136,11 +136,11 @@ export const AvailabilityPage: React.FC = () => {
                     value={formData.hoursPerDay}
                     onChange={(e) => setFormData({ ...formData, hoursPerDay: e.target.value })}
                     required
-                    className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-notion-border-light dark:border-notion-border-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white text-notion-text-primary-light dark:text-notion-text-primary-dark"
+                    className="w-full px-4 py-3 bg-transparent border border-notion-border-light dark:border-notion-border-dark rounded text-notion-text-primary-light dark:text-notion-text-primary-dark focus:outline-none focus:border-black dark:focus:border-white transition-colors"
                   />
                 </div>
               </div>
-              <div className="flex gap-3 pt-2">
+              <div className="flex gap-3 pt-4">
                 <button
                   type="submit"
                   className="px-6 py-2 bg-black dark:bg-white text-white dark:text-black rounded-full text-sm hover:opacity-90 transition-opacity"
@@ -160,7 +160,7 @@ export const AvailabilityPage: React.FC = () => {
         )}
 
         {showRecorder && (
-          <div className="mb-12">
+          <div className="mb-16 max-w-2xl">
             <VoiceRecorder onRecordingComplete={handleRecordingComplete} />
           </div>
         )}
