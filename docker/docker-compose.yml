@@ -72,5 +72,21 @@ services:
       - redis
     command: celery -A app.celery_app worker --loglevel=info
 
+  # Frontend
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.frontend
+    container_name: atlas-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    depends_on:
+      - api
+
 volumes:
   postgres_data:

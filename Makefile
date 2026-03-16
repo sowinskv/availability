@@ -1,4 +1,4 @@
-.PHONY: setup start stop restart logs clean test db-migrate db-reset
+.PHONY: setup start start-full dev stop restart logs logs-dev clean test db-migrate db-reset
 
 # Setup everything
 setup:
@@ -21,6 +21,19 @@ start-full:
 	@cd docker && docker-compose up -d
 	@echo "✅ Services started!"
 
+# Start everything including frontend (development mode)
+dev:
+	@echo "Starting Atlas in development mode (backend + frontend + worker)..."
+	@cd docker && docker-compose up -d
+	@echo "✅ All services started!"
+	@echo ""
+	@echo "Access points:"
+	@echo "   - Frontend: http://localhost:3000"
+	@echo "   - API: http://localhost:8000"
+	@echo "   - API Docs: http://localhost:8000/docs"
+	@echo ""
+	@echo "View logs: make logs-dev"
+
 # Stop all services
 stop:
 	@echo "Stopping Atlas services..."
@@ -33,6 +46,10 @@ restart: stop start
 # View logs
 logs:
 	@cd docker && docker-compose -f docker-compose.minimal.yml logs -f
+
+# View logs (dev mode with all services)
+logs-dev:
+	@cd docker && docker-compose logs -f
 
 # Test Docker setup
 docker-test:
