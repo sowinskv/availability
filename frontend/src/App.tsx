@@ -1,6 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { Sidebar } from './components/Sidebar';
 import { AvailabilityPage } from './pages/AvailabilityPage';
 import { RequirementsPage } from './pages/RequirementsPage';
 import { TasksPage } from './pages/TasksPage';
@@ -17,96 +19,88 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router>
-        <div className="min-h-screen bg-gray-50">
-          <nav className="bg-white shadow-sm border-b border-gray-200">
-            <div className="max-w-7xl mx-auto px-4">
-              <div className="flex justify-between items-center h-16">
-                <div className="flex items-center gap-8">
-                  <Link to="/" className="text-xl font-bold text-blue-600">
-                    Our process tool
-                  </Link>
-                  <div className="flex gap-4">
-                    <Link
-                      to="/availability"
-                      className="text-gray-700 hover:text-blue-600 transition-colors"
-                    >
-                      Availability
-                    </Link>
-                    <Link
-                      to="/requirements"
-                      className="text-gray-700 hover:text-blue-600 transition-colors"
-                    >
-                      Requirements
-                    </Link>
-                    <Link
-                      to="/tasks"
-                      className="text-gray-700 hover:text-blue-600 transition-colors"
-                    >
-                      Tasks
-                    </Link>
-                    <Link
-                      to="/allocations"
-                      className="text-gray-700 hover:text-blue-600 transition-colors"
-                    >
-                      Allocations
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </nav>
-
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/availability" element={<AvailabilityPage />} />
-            <Route path="/requirements" element={<RequirementsPage />} />
-            <Route path="/tasks" element={<TasksPage />} />
-            <Route path="/allocations" element={<div className="p-8">Allocations Page (Coming Soon)</div>} />
-          </Routes>
-        </div>
-      </Router>
+      <ThemeProvider>
+        <Router>
+          <div className="flex h-screen bg-notion-bg-light dark:bg-notion-bg-dark overflow-hidden">
+            <Sidebar />
+            <main className="flex-1 overflow-auto">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/availability" element={<AvailabilityPage />} />
+                <Route path="/requirements" element={<RequirementsPage />} />
+                <Route path="/tasks" element={<TasksPage />} />
+                <Route path="/allocations" element={<AllocationsPage />} />
+              </Routes>
+            </main>
+          </div>
+        </Router>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
 
 const HomePage: React.FC = () => {
   return (
-    <div className="max-w-7xl mx-auto px-4 py-16">
-      <div className="text-center">
-        <h1 className="text-5xl font-bold text-gray-900 mb-4">
+    <div className="p-12 max-w-6xl mx-auto animate-fade-in">
+      <div className="mb-12">
+        <h1 className="text-4xl font-bold text-notion-text-primary-light dark:text-notion-text-primary-dark mb-3">
           Welcome to Our process tool
         </h1>
-        <p className="text-xl text-gray-600 mb-8">
-          AI-Powered Project Planning Engine
+        <p className="text-lg text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
+          ai-powered project planning engine
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-          <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Team Intelligence
-            </h3>
-            <p className="text-gray-600">
-              Track availability, skills, and velocity across your team
-            </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="p-8 bg-notion-bg-light dark:bg-notion-bg-dark border border-notion-border-light dark:border-notion-border-dark rounded-lg hover:shadow-lg transition-all duration-200">
+          <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mb-4">
+            <span className="text-2xl">📊</span>
           </div>
-          <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Smart Planning
-            </h3>
-            <p className="text-gray-600">
-              Generate requirements and tasks from natural language
-            </p>
+          <h3 className="text-lg font-semibold text-notion-text-primary-light dark:text-notion-text-primary-dark mb-2">
+            team intelligence
+          </h3>
+          <p className="text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark leading-relaxed">
+            track availability, skills, and velocity across your team with voice input and calendar sync
+          </p>
+        </div>
+
+        <div className="p-8 bg-notion-bg-light dark:bg-notion-bg-dark border border-notion-border-light dark:border-notion-border-dark rounded-lg hover:shadow-lg transition-all duration-200">
+          <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4">
+            <span className="text-2xl">✨</span>
           </div>
-          <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Intelligent Allocation
-            </h3>
-            <p className="text-gray-600">
-              AI-powered task allocation based on skills and capacity
-            </p>
+          <h3 className="text-lg font-semibold text-notion-text-primary-light dark:text-notion-text-primary-dark mb-2">
+            smart planning
+          </h3>
+          <p className="text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark leading-relaxed">
+            generate structured requirements and granular tasks from natural language with ai
+          </p>
+        </div>
+
+        <div className="p-8 bg-notion-bg-light dark:bg-notion-bg-dark border border-notion-border-light dark:border-notion-border-dark rounded-lg hover:shadow-lg transition-all duration-200">
+          <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mb-4">
+            <span className="text-2xl">🎯</span>
           </div>
+          <h3 className="text-lg font-semibold text-notion-text-primary-light dark:text-notion-text-primary-dark mb-2">
+            intelligent allocation
+          </h3>
+          <p className="text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark leading-relaxed">
+            ai-powered task allocation based on skills, capacity, and historical velocity
+          </p>
         </div>
       </div>
+    </div>
+  );
+};
+
+const AllocationsPage: React.FC = () => {
+  return (
+    <div className="p-12 max-w-6xl mx-auto">
+      <h1 className="text-3xl font-bold text-notion-text-primary-light dark:text-notion-text-primary-dark mb-4">
+        Allocations
+      </h1>
+      <p className="text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
+        coming soon...
+      </p>
     </div>
   );
 };

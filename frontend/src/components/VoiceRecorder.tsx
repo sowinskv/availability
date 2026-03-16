@@ -64,35 +64,35 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplet
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 p-6 bg-white rounded-lg shadow-sm border border-gray-200">
-      <div className="text-sm text-gray-600">
+    <div className="flex flex-col items-center gap-6 p-8">
+      <div className="text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
         {isRecording ? (
-          <span className="flex items-center gap-2">
+          <span className="flex items-center gap-2 font-medium">
             <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-            Recording: {formatTime(recordingTime)}
+            recording: {formatTime(recordingTime)}
           </span>
         ) : (
-          'Click the microphone to start recording'
+          'click the microphone to start recording'
         )}
       </div>
 
       <button
         onClick={isRecording ? stopRecording : startRecording}
-        className={`p-6 rounded-full transition-all ${
+        className={`p-8 rounded-full transition-all ${
           isRecording
-            ? 'bg-red-500 hover:bg-red-600'
-            : 'bg-blue-500 hover:bg-blue-600'
-        } text-white shadow-lg hover:shadow-xl`}
+            ? 'bg-red-500 hover:bg-red-600 shadow-red-500/30'
+            : 'bg-blue-500 hover:bg-blue-600 shadow-blue-500/30'
+        } text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-95`}
       >
         {isRecording ? (
-          <StopCircle size={32} />
+          <StopCircle size={40} />
         ) : (
-          <Mic size={32} />
+          <Mic size={40} />
         )}
       </button>
 
-      <p className="text-xs text-gray-500 text-center max-w-xs">
-        Speak your availability information naturally. Include dates, type (vacation, sick leave), and any other details.
+      <p className="text-xs text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark text-center max-w-md leading-relaxed">
+        speak your availability information naturally. include dates, type (vacation, sick leave), and any other details.
       </p>
     </div>
   );

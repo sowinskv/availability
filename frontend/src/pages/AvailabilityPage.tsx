@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { VoiceRecorder } from '../components/VoiceRecorder';
+import { Button } from '../components/Button';
+import { Card, CardHeader, CardContent } from '../components/Card';
 import { useAvailability } from '../hooks/useAvailability';
 import { format } from 'date-fns';
-import { Calendar, Check, X, Clock } from 'lucide-react';
+import { Calendar, Check, X, Clock, Mic } from 'lucide-react';
 
 export const AvailabilityPage: React.FC = () => {
   const { availabilities, isLoading, createFromVoice, approveAvailability, declineAvailability } = useAvailability();
@@ -22,13 +24,13 @@ export const AvailabilityPage: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'approved':
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400';
       case 'declined':
-        return 'bg-red-100 text-red-800';
+        return 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400';
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300';
     }
   };
 
@@ -43,72 +45,91 @@ export const AvailabilityPage: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div className="flex items-center justify-center h-screen">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-full">
+        <div className="text-notion-text-secondary-light dark:text-notion-text-secondary-dark">loading...</div>
+      </div>
+    );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="p-12 max-w-6xl mx-auto animate-fade-in">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Team Availability</h1>
-        <p className="text-gray-600">Manage team availability using voice input or manual entry</p>
+        <h1 className="text-3xl font-bold text-notion-text-primary-light dark:text-notion-text-primary-dark mb-2">
+          team availability
+        </h1>
+        <p className="text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
+          manage team availability using voice input or manual entry
+        </p>
       </div>
 
-      <div className="mb-8">
-        <button
+      <div className="mb-6">
+        <Button
+          variant="primary"
+          icon={<Mic size={18} />}
           onClick={() => setShowRecorder(!showRecorder)}
-          className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2"
         >
-          <Calendar size={20} />
-          {showRecorder ? 'Hide Voice Recorder' : 'Record Availability'}
-        </button>
+          {showRecorder ? 'hide voice recorder' : 'record availability'}
+        </Button>
       </div>
 
       {showRecorder && (
-        <div className="mb-8">
-          <VoiceRecorder onRecordingComplete={handleRecordingComplete} />
+        <div className="mb-8 animate-slide-in">
+          <Card>
+            <VoiceRecorder onRecordingComplete={handleRecordingComplete} />
+          </Card>
         </div>
       )}
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">Availability Requests</h2>
-        </div>
-
-        <div className="divide-y divide-gray-200">
+      <Card padding="none">
+        <CardHeader
+          title="availability requests"
+          subtitle={`${availabilities?.length || 0} total`}
+        />
+        <CardContent className="divide-y divide-notion-border-light dark:divide-notion-border-dark">
           {availabilities?.length === 0 ? (
-            <div className="px-6 py-12 text-center text-gray-500">
-              No availability records yet. Record your first availability using the button above.
+            <div className="py-12 text-center text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">
+              no availability records yet. record your first availability using the button above.
             </div>
           ) : (
             availabilities?.map((availability) => (
-              <div key={availability.id} className="px-6 py-4 hover:bg-gray-50 transition-colors">
+              <div
+                key={availability.id}
+                className="py-4 hover:bg-notion-hover-light dark:hover:bg-notion-hover-dark transition-colors px-1 -mx-1 rounded"
+              >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(availability.status)}`}>
+                      <span
+                        className={`px-2.5 py-1 rounded-md text-xs font-medium ${getStatusColor(availability.status)}`}
+                      >
                         {availability.status}
                       </span>
-                      <span className="text-sm font-medium text-gray-700">
+                      <span className="text-sm font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark">
                         {getTypeLabel(availability.type)}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-4 text-sm text-gray-600 mb-2">
-                      <span className="flex items-center gap-1">
-                        <Calendar size={16} />
-                        {format(new Date(availability.start_date), 'MMM d, yyyy')} - {format(new Date(availability.end_date), 'MMM d, yyyy')}
+                    <div className="flex items-center gap-4 text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark mb-2">
+                      <span className="flex items-center gap-1.5">
+                        <Calendar size={15} />
+                        {format(new Date(availability.start_date), 'MMM d, yyyy')} -{' '}
+                        {format(new Date(availability.end_date), 'MMM d, yyyy')}
                       </span>
-                      <span className="flex items-center gap-1">
-                        <Clock size={16} />
+                      <span className="flex items-center gap-1.5">
+                        <Clock size={15} />
                         {availability.hours_per_day}h/day
                       </span>
                     </div>
 
                     {availability.transcription_text && (
-                      <div className="mt-2 p-3 bg-gray-50 rounded text-sm text-gray-700">
-                        <span className="font-medium">Transcription:</span> {availability.transcription_text}
+                      <div className="mt-2 p-3 bg-notion-hover-light dark:bg-notion-hover-dark rounded-md text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
+                        <span className="font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark">
+                          transcription:
+                        </span>{' '}
+                        {availability.transcription_text}
                         {availability.transcription_confidence && (
-                          <span className="ml-2 text-xs text-gray-500">
+                          <span className="ml-2 text-xs text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">
                             ({Math.round(availability.transcription_confidence * 100)}% confidence)
                           </span>
                         )}
@@ -118,28 +139,32 @@ export const AvailabilityPage: React.FC = () => {
 
                   {availability.status === 'pending' && (
                     <div className="flex gap-2 ml-4">
-                      <button
+                      <Button
+                        variant="success"
+                        size="sm"
+                        icon={<Check size={16} />}
                         onClick={() => approveAvailability.mutate(availability.id)}
-                        className="p-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
-                        title="Approve"
+                        title="approve"
                       >
-                        <Check size={18} />
-                      </button>
-                      <button
+                        approve
+                      </Button>
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        icon={<X size={16} />}
                         onClick={() => declineAvailability.mutate(availability.id)}
-                        className="p-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-                        title="Decline"
+                        title="decline"
                       >
-                        <X size={18} />
-                      </button>
+                        decline
+                      </Button>
                     </div>
                   )}
                 </div>
               </div>
             ))
           )}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
