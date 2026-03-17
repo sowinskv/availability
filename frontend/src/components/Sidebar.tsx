@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Calendar, FileText, CheckSquare, Users, Moon, Sun, LogOut } from 'lucide-react';
+import { Calendar, FileText, CheckSquare, Users, Moon, Sun, LogOut, Clock } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -12,7 +12,8 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { path: '/app', label: 'Home', icon: <Users size={18} /> },
-  { path: '/app/availability', label: 'Availability', icon: <Calendar size={18} /> },
+  { path: '/app/availability', label: 'Availability', icon: <Clock size={18} /> },
+  { path: '/app/calendar', label: 'Calendar', icon: <Calendar size={18} /> },
   { path: '/app/requirements', label: 'Requirements', icon: <FileText size={18} /> },
   { path: '/app/tasks', label: 'Tasks', icon: <CheckSquare size={18} /> },
   { path: '/app/allocations', label: 'Allocations', icon: <Users size={18} /> },

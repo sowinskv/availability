@@ -8,6 +8,7 @@ import { PageTransition } from './components/PageTransition';
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { AvailabilityPage } from './pages/AvailabilityPage';
+import { CalendarPage } from './pages/CalendarPage';
 import { RequirementsPage } from './pages/RequirementsPage';
 import { TasksPage } from './pages/TasksPage';
 
@@ -34,6 +35,7 @@ const AuthenticatedApp: React.FC = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/availability" element={<AvailabilityPage />} />
+            <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/requirements" element={<RequirementsPage />} />
             <Route path="/tasks" element={<TasksPage />} />
             <Route path="/allocations" element={<AllocationsPage />} />
