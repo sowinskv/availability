@@ -1,10 +1,10 @@
 """
 Integration-specific exceptions for Our process tool.
 """
-from .base import Our process toolException
+from .base import ProcessToolException
 
 
-class IntegrationException(Our process toolException):
+class IntegrationException(ProcessToolException):
     """Base class for integration errors."""
     pass
 

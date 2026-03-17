@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { PageTransition } from '../components/PageTransition';
 import { ArrowLeft } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
@@ -19,25 +20,30 @@ export const LoginPage: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black flex items-center justify-center">
       <div className="w-full max-w-md px-8">
         {/* Back button */}
-        <button
-          onClick={() => navigate('/')}
-          className="mb-8 flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-        >
-          <ArrowLeft size={20} />
-          Back
-        </button>
+        <PageTransition delay={0}>
+          <button
+            onClick={() => navigate('/')}
+            className="mb-8 flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          >
+            <ArrowLeft size={20} />
+            Back
+          </button>
+        </PageTransition>
 
         {/* Logo */}
-        <div className="mb-8">
-          <div className="w-12 h-12 bg-black dark:bg-white rounded-lg flex items-center justify-center mb-6">
-            <span className="text-white dark:text-black font-bold text-xl">O</span>
+        <PageTransition delay={100}>
+          <div className="mb-8">
+            <div className="w-12 h-12 bg-black dark:bg-white rounded-lg flex items-center justify-center mb-6">
+              <span className="text-white dark:text-black font-bold text-xl">O</span>
+            </div>
+            <h1 className="text-3xl font-semibold text-gray-900 dark:text-white mb-2">Sign in</h1>
+            <p className="text-gray-600 dark:text-gray-400">Welcome back</p>
           </div>
-          <h1 className="text-3xl font-semibold text-gray-900 dark:text-white mb-2">Sign in</h1>
-          <p className="text-gray-600 dark:text-gray-400">Welcome back</p>
-        </div>
+        </PageTransition>
 
         {/* Login form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <PageTransition delay={200}>
+          <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
               Email
@@ -78,7 +84,8 @@ export const LoginPage: React.FC = () => {
           <p className="text-center text-sm text-gray-500 dark:text-gray-500">
             Demo: any credentials work for now
           </p>
-        </form>
+          </form>
+        </PageTransition>
       </div>
     </div>
   );

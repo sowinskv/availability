@@ -1,10 +1,10 @@
 """
 Validation-specific exceptions for Our process tool.
 """
-from .base import Our process toolException
+from .base import ProcessToolException
 
 
-class ValidationException(Our process toolException):
+class ValidationException(ProcessToolException):
     """Base class for validation errors."""
     pass
 

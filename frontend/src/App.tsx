@@ -1,9 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { Sidebar } from './components/Sidebar';
+import { PageTransition } from './components/PageTransition';
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { AvailabilityPage } from './pages/AvailabilityPage';
@@ -69,37 +70,45 @@ function App() {
 const HomePage: React.FC = () => {
   return (
     <div className="p-12 max-w-5xl mx-auto">
-      <h2 className="text-sm text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark mb-16">
-        Our services
-      </h2>
+      <PageTransition delay={0}>
+        <h2 className="text-sm text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark mb-16">
+          Our services
+        </h2>
+      </PageTransition>
 
       <div className="space-y-0">
-        <div className="py-8 grid grid-cols-2 gap-8 border-b border-notion-border-light dark:border-notion-border-dark">
-          <h3 className="text-lg font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark">
-            Team Intelligence
-          </h3>
-          <p className="text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
-            Track availability, skills, and velocity across your team with voice input and calendar sync.
-          </p>
-        </div>
+        <PageTransition delay={100}>
+          <div className="py-8 grid grid-cols-2 gap-8 border-b border-notion-border-light dark:border-notion-border-dark">
+            <h3 className="text-lg font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark">
+              Team Intelligence
+            </h3>
+            <p className="text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
+              Track availability, skills, and velocity across your team with voice input and calendar sync.
+            </p>
+          </div>
+        </PageTransition>
 
-        <div className="py-8 grid grid-cols-2 gap-8 border-b border-notion-border-light dark:border-notion-border-dark">
-          <h3 className="text-lg font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark">
-            Smart Planning
-          </h3>
-          <p className="text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
-            Generate structured requirements and granular tasks from natural language with AI.
-          </p>
-        </div>
+        <PageTransition delay={200}>
+          <div className="py-8 grid grid-cols-2 gap-8 border-b border-notion-border-light dark:border-notion-border-dark">
+            <h3 className="text-lg font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark">
+              Smart Planning
+            </h3>
+            <p className="text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
+              Generate structured requirements and granular tasks from natural language with AI.
+            </p>
+          </div>
+        </PageTransition>
 
-        <div className="py-8 grid grid-cols-2 gap-8 border-b border-notion-border-light dark:border-notion-border-dark">
-          <h3 className="text-lg font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark">
-            Intelligent Allocation
-          </h3>
-          <p className="text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
-            AI-powered task allocation based on skills, capacity, and historical velocity.
-          </p>
-        </div>
+        <PageTransition delay={300}>
+          <div className="py-8 grid grid-cols-2 gap-8 border-b border-notion-border-light dark:border-notion-border-dark">
+            <h3 className="text-lg font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark">
+              Intelligent Allocation
+            </h3>
+            <p className="text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
+              AI-powered task allocation based on skills, capacity, and historical velocity.
+            </p>
+          </div>
+        </PageTransition>
       </div>
     </div>
   );
@@ -107,13 +116,22 @@ const HomePage: React.FC = () => {
 
 const AllocationsPage: React.FC = () => {
   return (
-    <div className="p-12 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold text-notion-text-primary-light dark:text-notion-text-primary-dark mb-4">
-        Allocations
-      </h1>
-      <p className="text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
-        coming soon...
-      </p>
+    <div className="p-12 max-w-5xl mx-auto">
+      <PageTransition delay={0}>
+        <div className="mb-20">
+          <h1 className="text-3xl font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark mb-12">
+            Allocations
+          </h1>
+        </div>
+      </PageTransition>
+
+      <PageTransition delay={100}>
+        <div className="py-16 text-center">
+          <p className="text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">
+            coming soon
+          </p>
+        </div>
+      </PageTransition>
     </div>
   );
 };

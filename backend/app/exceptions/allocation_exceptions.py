@@ -1,10 +1,10 @@
 """
 Allocation-specific exceptions for Our process tool.
 """
-from .base import Our process toolException
+from .base import ProcessToolException
 
 
-class AllocationException(Our process toolException):
+class AllocationException(ProcessToolException):
     """Base class for allocation errors."""
     pass
 

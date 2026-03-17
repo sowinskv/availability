@@ -1,10 +1,10 @@
 """
 LLM-specific exceptions for Our process tool.
 """
-from .base import Our process toolException
+from .base import ProcessToolException
 
 
-class LLMException(Our process toolException):
+class LLMException(ProcessToolException):
     """Base class for LLM-related errors."""
     pass
 

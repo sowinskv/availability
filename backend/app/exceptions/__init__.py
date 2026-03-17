@@ -1,7 +1,7 @@
 """
-Exception classes for Our process tool.
+Exception classes for ProcessTool.
 """
-from .base import Our process toolException
+from .base import ProcessToolException
 from .llm_exceptions import (
     LLMException,
     MalformedResponseError,
@@ -34,7 +34,7 @@ from .validation_exceptions import (
 )
 
 __all__ = [
-    "Our process toolException",
+    "ProcessToolException",
     "LLMException",
     "MalformedResponseError",
     "TokenLimitError",

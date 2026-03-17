@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { VoiceRecorder } from '../components/VoiceRecorder';
+import { PageTransition } from '../components/PageTransition';
 import { useAvailability } from '../hooks/useAvailability';
 import { format } from 'date-fns';
 
@@ -53,11 +54,15 @@ export const AvailabilityPage: React.FC = () => {
 
   return (
     <div className="p-12 max-w-5xl mx-auto">
-      <div className="mb-20">
-        <h1 className="text-3xl font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark mb-12">
-          Availability
-        </h1>
+      <PageTransition delay={0}>
+        <div className="mb-20">
+          <h1 className="text-3xl font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark mb-12">
+            Availability
+          </h1>
+        </div>
+      </PageTransition>
 
+      <PageTransition delay={100}>
         <div className="flex gap-3 mb-10">
           <button
             onClick={() => {
@@ -164,9 +169,10 @@ export const AvailabilityPage: React.FC = () => {
             <VoiceRecorder onRecordingComplete={handleRecordingComplete} />
           </div>
         )}
-      </div>
+      </PageTransition>
 
-      <div className="space-y-0">
+      <PageTransition delay={200}>
+        <div className="space-y-0">
         {availabilities?.length === 0 ? (
           <div className="py-16 text-center text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">
             No availability records yet
@@ -223,7 +229,8 @@ export const AvailabilityPage: React.FC = () => {
             </div>
           ))
         )}
-      </div>
+        </div>
+      </PageTransition>
     </div>
   );
 };
