@@ -3,11 +3,12 @@ Requirements API routes.
 """
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import List, Union
+from typing import List, Union, Dict, Any
 from uuid import UUID
 
 from ..models import Requirement, RequirementStatus, RequirementSource
 from ..services.requirements_generator_service import RequirementsGeneratorService
+from ..services.field_suggestion_service import FieldSuggestionService
 from ..exceptions import MalformedResponseError, TokenLimitError
 from ..database import get_db
 from ..dependencies import get_requirements_generator
@@ -184,3 +185,75 @@ async def delete_requirement(
     db.commit()
 
     return {"status": "deleted", "id": str(requirement_id)}
+
+
+# Wizard-related schemas
+class RequirementWizardCreate(BaseModel):
+    """Schema for creating requirements via wizard."""
+    project_id: UUID
+    functional_reqs: List[Dict[str, Any]]
+    non_functional_reqs: List[Dict[str, Any]]
+    technical_reqs: List[Dict[str, Any]]
+    author_id: UUID
+
+
+class FieldSuggestionRequest(BaseModel):
+    """Schema for field suggestion request."""
+    field_type: str  # "fr_acceptance_criteria", "nfr_metric", "tr_dependencies"
+    context: Dict[str, Any]
+
+
+@router.post("/wizard", response_model=RequirementResponse)
+async def create_requirements_via_wizard(
+    data: RequirementWizardCreate,
+    db: Session = Depends(get_db)
+):
+    """Create structured requirements from wizard submission."""
+    try:
+        # Create single Requirement record with all FR/NFR/TR data
+        requirement = Requirement(
+            title=f"Project Requirements",
+            author_id=data.author_id,
+            project_id=data.project_id,
+            functional_reqs=data.functional_reqs,
+            non_functional_reqs=data.non_functional_reqs,
+            technical_reqs=data.technical_reqs,
+            status=RequirementStatus.DRAFT,
+            source=RequirementSource.MANUAL
+        )
+
+        db.add(requirement)
+        db.commit()
+        db.refresh(requirement)
+
+        return requirement
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to create requirements: {str(e)}"
+        )
+
+
+@router.post("/suggest-field")
+async def suggest_field_value(
+    request: FieldSuggestionRequest
+):
+    """Get LLM suggestion for specific field."""
+    try:
+        service = FieldSuggestionService()
+        suggestion = await service.suggest_field(
+            request.field_type,
+            request.context
+        )
+
+        return {"suggestion": suggestion}
+
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to generate suggestion: {str(e)}"
+        )

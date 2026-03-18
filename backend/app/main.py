@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
-from .api import availability_routes, requirements_routes, tasks_routes, allocation_routes
+from .api import availability_routes, requirements_routes, tasks_routes, allocation_routes, project_routes
 
 
 @asynccontextmanager
@@ -45,6 +45,7 @@ app.include_router(availability_routes.router)
 app.include_router(requirements_routes.router)
 app.include_router(tasks_routes.router)
 app.include_router(allocation_routes.router)
+app.include_router(project_routes.router)
 
 
 @app.get("/")

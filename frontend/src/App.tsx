@@ -17,6 +17,9 @@ import { NotificationsPage } from './pages/NotificationsPage';
 import { IntegrationsPage } from './pages/IntegrationsPage';
 import { NotionIntegrationPage } from './pages/integrations/NotionIntegrationPage';
 import { TeamsIntegrationPage } from './pages/integrations/TeamsIntegrationPage';
+import { ProjectsPage } from './pages/ProjectsPage';
+import { RequirementsWizardPage } from './pages/RequirementsWizardPage';
+import { ProjectDetailsPage } from './pages/ProjectDetailsPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,6 +49,9 @@ const AuthenticatedApp: React.FC = () => {
             <Route path="/requirements" element={<RequirementsPage />} />
             <Route path="/tasks" element={<TasksPage />} />
             <Route path="/allocations" element={<AllocationsPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/projects/wizard" element={<RequirementsWizardPage />} />
+            <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
             <Route path="/preferences" element={<PreferencesPage />} />
             <Route path="/notifications" element={<NotificationsPage />} />
             <Route path="/integrations" element={<IntegrationsPage />} />

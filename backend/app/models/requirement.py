@@ -12,16 +12,16 @@ from .base import Base, TimestampMixin
 
 class RequirementStatus(enum.Enum):
     """Requirement status enumeration."""
-    DRAFT = "draft"
-    REVIEW = "review"
-    APPROVED = "approved"
+    DRAFT = "DRAFT"
+    REVIEW = "REVIEW"
+    APPROVED = "APPROVED"
 
 
 class RequirementSource(enum.Enum):
     """Requirement source enumeration."""
-    VOICE = "voice"
-    MANUAL = "manual"
-    IMPORTED = "imported"
+    VOICE = "VOICE"
+    MANUAL = "MANUAL"
+    IMPORTED = "IMPORTED"
 
 
 class Requirement(Base, TimestampMixin):
@@ -32,6 +32,7 @@ class Requirement(Base, TimestampMixin):
     title = Column(String(500), nullable=False)
     description = Column(Text)
     author_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, index=True)
+    project_id = Column(UUID(as_uuid=True), ForeignKey("projects.id", ondelete="SET NULL"), nullable=True, index=True)
 
     status = Column(Enum(RequirementStatus), nullable=False, default=RequirementStatus.DRAFT, index=True)
     source = Column(Enum(RequirementSource), nullable=False, default=RequirementSource.MANUAL)
@@ -47,6 +48,7 @@ class Requirement(Base, TimestampMixin):
 
     # Relationships
     author = relationship("User", back_populates="authored_requirements")
+    project = relationship("Project", back_populates="requirements")
     tasks = relationship("Task", back_populates="requirement", cascade="all, delete-orphan")
 
     def __repr__(self):
