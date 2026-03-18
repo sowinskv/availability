@@ -8,7 +8,7 @@
   }
 
   html {
-    @apply bg-notion-bg-light dark:bg-notion-bg-dark;
+    @apply bg-white;
   }
 
   body {
@@ -21,7 +21,7 @@
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   }
 
-  /* Custom scrollbar for dark mode */
+  /* Custom scrollbar */
   ::-webkit-scrollbar {
     @apply w-2 h-2;
   }
@@ -31,11 +31,19 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-notion-border-light dark:bg-notion-border-dark rounded-full;
+    @apply bg-[#e5e5e5] rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-notion-text-tertiary-light dark:bg-notion-text-tertiary-dark;
+    @apply bg-[#999999];
+  }
+
+  /* Remove default select arrow in favor of custom */
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999999' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0 center;
+    padding-right: 20px;
   }
 }
 

@@ -3,22 +3,26 @@ import { PageTransition } from '../components/PageTransition';
 
 export const TasksPage: React.FC = () => {
   return (
-    <div className="p-12 max-w-5xl mx-auto">
-      <PageTransition delay={0}>
-        <div className="mb-20">
-          <h1 className="text-3xl font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark mb-12">
-            Tasks
-          </h1>
+    <div className="h-full bg-white">
+      {/* Header */}
+      <div className="border-b border-[#e5e5e5] px-12 py-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-[10px] text-[#999999] font-medium tracking-wider uppercase mb-1">AI PLANNING</div>
+            <h1 className="text-2xl font-normal text-[#000000]">Tasks</h1>
+          </div>
         </div>
-      </PageTransition>
+      </div>
 
-      <PageTransition delay={100}>
-        <div className="py-16 text-center">
-          <p className="text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">
-            coming soon
-          </p>
-        </div>
-      </PageTransition>
+      {/* Content */}
+      <div className="flex items-center justify-center h-[calc(100vh-120px)]">
+        <PageTransition delay={100}>
+          <div className="text-center">
+            <div className="text-6xl font-light text-[#e5e5e5] mb-4">Coming Soon</div>
+            <p className="text-[#999999]">AI-powered task decomposition and management</p>
+          </div>
+        </PageTransition>
+      </div>
     </div>
   );
 };
