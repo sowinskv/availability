@@ -48,7 +48,7 @@ def get_requirements_generator(db: Session = Depends(get_db)) -> RequirementsGen
         prompt_text = prompt.content
 
     return RequirementsGeneratorService(
-        api_key=settings.ANTHROPIC_API_KEY,
+        api_key=settings.GEMINI_API_KEY,
         prompt_template=prompt_text
     )
 

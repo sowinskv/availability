@@ -38,9 +38,11 @@ export const useRequirements = (status?: string) => {
   });
 
   const generateFromText = useMutation({
-    mutationFn: async (inputText: string) => {
+    mutationFn: async ({ inputText, authorId }: { inputText: string; authorId?: string }) => {
       const response = await axios.post(`${API_BASE}/requirements/generate`, {
         input_text: inputText,
+      }, {
+        params: authorId ? { author_id: authorId } : undefined,
       });
       return response.data;
     },
@@ -59,6 +61,16 @@ export const useRequirements = (status?: string) => {
     },
   });
 
+  const deleteRequirement = useMutation({
+    mutationFn: async (requirementId: string) => {
+      const response = await axios.delete(`${API_BASE}/requirements/${requirementId}`);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['requirements'] });
+    },
+  });
+
   return {
     requirements,
     isLoading,
@@ -66,5 +78,6 @@ export const useRequirements = (status?: string) => {
     createRequirement,
     generateFromText,
     approveRequirement,
+    deleteRequirement,
   };
 };

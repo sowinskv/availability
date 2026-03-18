@@ -72,8 +72,18 @@ export const Sidebar: React.FC = () => {
         </button>
 
         {user && (
-          <div className="px-3 py-2 text-xs text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">
-            {user.email}
+          <div className="px-3 py-2 space-y-1">
+            <div className="text-sm font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark">
+              {user.name}
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs px-2 py-0.5 bg-black dark:bg-white text-white dark:text-black rounded uppercase font-medium">
+                {user.role}
+              </span>
+              <span className="text-xs text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">
+                {user.email}
+              </span>
+            </div>
           </div>
         )}
 

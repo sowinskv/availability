@@ -3,7 +3,7 @@ Requirements API routes.
 """
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Union
 from uuid import UUID
 
 from ..models import Requirement, RequirementStatus, RequirementSource
@@ -15,7 +15,7 @@ from ..dependencies import get_requirements_generator
 router = APIRouter(prefix="/requirements", tags=["requirements"])
 
 
-from pydantic import BaseModel
+from pydantic import BaseModel, model_validator
 
 
 class RequirementCreate(BaseModel):
@@ -29,15 +29,31 @@ class RequirementVoiceCreate(BaseModel):
 
 
 class RequirementResponse(BaseModel):
-    id: str
+    id: Union[str, UUID]
     title: str
     description: str | None
-    author_id: str
+    author_id: Union[str, UUID]
     status: str
     source: str
-    functional_reqs: dict
-    non_functional_reqs: dict
-    technical_reqs: dict
+    functional_reqs: list
+    non_functional_reqs: list
+    technical_reqs: list
+
+    @model_validator(mode='before')
+    @classmethod
+    def convert_uuids(cls, data):
+        if isinstance(data, dict):
+            if 'id' in data and isinstance(data['id'], UUID):
+                data['id'] = str(data['id'])
+            if 'author_id' in data and isinstance(data['author_id'], UUID):
+                data['author_id'] = str(data['author_id'])
+        else:
+            # For ORM objects
+            if hasattr(data, 'id') and isinstance(data.id, UUID):
+                data.id = str(data.id)
+            if hasattr(data, 'author_id') and isinstance(data.author_id, UUID):
+                data.author_id = str(data.author_id)
+        return data
 
     class Config:
         from_attributes = True
@@ -68,11 +84,16 @@ async def create_requirement(
 @router.post("/generate", response_model=RequirementResponse)
 async def generate_requirement(
     input_data: RequirementVoiceCreate,
-    author_id: UUID,
+    author_id: UUID = None,
     db: Session = Depends(get_db),
     generator_service: RequirementsGeneratorService = Depends(get_requirements_generator)
 ):
     """Generate requirements from natural language input."""
+    # Use default test user if no author_id provided
+    if author_id is None:
+        from uuid import uuid4
+        author_id = UUID("00000000-0000-0000-0000-000000000001")
+
     try:
         # Generate requirements using LLM
         generated = await generator_service.generate_requirements(input_data.input_text)
@@ -146,3 +167,20 @@ async def approve_requirement(
     db.commit()
 
     return {"status": "approved"}
+
+
+@router.delete("/{requirement_id}")
+async def delete_requirement(
+    requirement_id: UUID,
+    db: Session = Depends(get_db)
+):
+    """Delete requirement."""
+    req = db.query(Requirement).filter(Requirement.id == requirement_id).first()
+
+    if not req:
+        raise HTTPException(status_code=404, detail="Requirement not found")
+
+    db.delete(req)
+    db.commit()
+
+    return {"status": "deleted", "id": str(requirement_id)}

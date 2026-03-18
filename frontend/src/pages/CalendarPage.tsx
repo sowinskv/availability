@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { PageTransition } from '../components/PageTransition';
 import { useAvailability } from '../hooks/useAvailability';
+import { useAuth } from '../contexts/AuthContext';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths, startOfWeek, endOfWeek, parseISO } from 'date-fns';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -14,8 +15,26 @@ interface AvailabilityBlock {
 }
 
 export const CalendarPage: React.FC = () => {
+  const { user } = useAuth();
   const [currentDate, setCurrentDate] = useState(new Date());
   const { availabilities, isLoading } = useAvailability();
+
+  // Role-based permissions
+  const isApprover = user?.role === 'ba' || user?.role === 'manager';
+  const isDeveloper = user?.role === 'dev';
+
+  // Filter availabilities based on role
+  const filteredAvailabilities = useMemo(() => {
+    if (!availabilities) return [];
+
+    // Developers only see their own entries
+    if (isDeveloper) {
+      return availabilities.filter(a => a.user_id === user?.id);
+    }
+
+    // BA/Manager/Marek see all entries
+    return availabilities;
+  }, [availabilities, isDeveloper, user?.id]);
 
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(currentDate);
@@ -26,11 +45,11 @@ export const CalendarPage: React.FC = () => {
 
   // Group availabilities by date
   const availabilitiesByDate = useMemo(() => {
-    if (!availabilities) return {};
+    if (!filteredAvailabilities) return {};
 
     const grouped: Record<string, AvailabilityBlock[]> = {};
 
-    availabilities.forEach((avail) => {
+    filteredAvailabilities.forEach((avail) => {
       const start = parseISO(avail.start_date);
       const end = parseISO(avail.end_date);
       const daysInRange = eachDayOfInterval({ start, end });
@@ -52,7 +71,7 @@ export const CalendarPage: React.FC = () => {
     });
 
     return grouped;
-  }, [availabilities]);
+  }, [filteredAvailabilities]);
 
   const getTypeColor = (type: string) => {
     switch (type) {
@@ -82,7 +101,7 @@ export const CalendarPage: React.FC = () => {
       <PageTransition delay={0}>
         <div className="mb-12 flex items-center justify-between">
           <h1 className="text-3xl font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark">
-            Team Calendar
+            {isDeveloper ? 'My Calendar' : 'Team Calendar'}
           </h1>
 
           <div className="flex items-center gap-4">

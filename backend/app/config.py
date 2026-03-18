@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     REDIS_URL: str = "redis://localhost:6379/0"
 
     # API Keys
-    ANTHROPIC_API_KEY: str = ""
+    GEMINI_API_KEY: str = ""
     OPENAI_API_KEY: str = ""
 
     # Azure Content Safety (optional)

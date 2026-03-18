@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { VoiceRecorder } from '../components/VoiceRecorder';
 import { PageTransition } from '../components/PageTransition';
 import { useAvailability } from '../hooks/useAvailability';
+import { useAuth } from '../contexts/AuthContext';
 import { format } from 'date-fns';
 
 export const AvailabilityPage: React.FC = () => {
+  const { user } = useAuth();
   const { availabilities, isLoading, createFromVoice, approveAvailability, declineAvailability } = useAvailability();
   const [showRecorder, setShowRecorder] = useState(false);
   const [showManualForm, setShowManualForm] = useState(false);
@@ -14,6 +16,23 @@ export const AvailabilityPage: React.FC = () => {
     hoursPerDay: '8',
     type: 'vacation' as 'vacation' | 'sick' | 'partial' | 'available',
   });
+
+  // Role-based permissions
+  const isApprover = user?.role === 'ba' || user?.role === 'manager';
+  const isDeveloper = user?.role === 'dev';
+
+  // Filter availabilities based on role
+  const filteredAvailabilities = React.useMemo(() => {
+    if (!availabilities) return [];
+
+    // Developers only see their own entries
+    if (isDeveloper) {
+      return availabilities.filter(a => a.user_id === user?.id);
+    }
+
+    // BA/Manager/Marek see all entries
+    return availabilities;
+  }, [availabilities, isDeveloper, user?.id]);
 
   const handleRecordingComplete = async (audioBlob: Blob) => {
     try {
@@ -52,6 +71,17 @@ export const AvailabilityPage: React.FC = () => {
     );
   }
 
+  // Calculate summary for approvers
+  const summary = React.useMemo(() => {
+    if (!isApprover || !filteredAvailabilities) return null;
+
+    const pending = filteredAvailabilities.filter(a => a.status === 'pending').length;
+    const approved = filteredAvailabilities.filter(a => a.status === 'approved').length;
+    const declined = filteredAvailabilities.filter(a => a.status === 'declined').length;
+
+    return { pending, approved, declined, total: filteredAvailabilities.length };
+  }, [isApprover, filteredAvailabilities]);
+
   return (
     <div className="p-12 max-w-5xl mx-auto">
       <PageTransition delay={0}>
@@ -59,6 +89,43 @@ export const AvailabilityPage: React.FC = () => {
           <h1 className="text-3xl font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark mb-12">
             Availability
           </h1>
+
+          {isApprover && summary && summary.total > 0 && (
+            <div className="grid grid-cols-4 gap-4 mt-8">
+              <div className="px-4 py-3 border border-notion-border-light dark:border-notion-border-dark rounded">
+                <div className="text-2xl font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark">
+                  {summary.total}
+                </div>
+                <div className="text-sm text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">
+                  Total Entries
+                </div>
+              </div>
+              <div className="px-4 py-3 border border-yellow-400 dark:border-yellow-600 rounded bg-yellow-50 dark:bg-yellow-900/20">
+                <div className="text-2xl font-medium text-yellow-700 dark:text-yellow-400">
+                  {summary.pending}
+                </div>
+                <div className="text-sm text-yellow-600 dark:text-yellow-500">
+                  Pending Review
+                </div>
+              </div>
+              <div className="px-4 py-3 border border-green-400 dark:border-green-600 rounded bg-green-50 dark:bg-green-900/20">
+                <div className="text-2xl font-medium text-green-700 dark:text-green-400">
+                  {summary.approved}
+                </div>
+                <div className="text-sm text-green-600 dark:text-green-500">
+                  Approved
+                </div>
+              </div>
+              <div className="px-4 py-3 border border-red-400 dark:border-red-600 rounded bg-red-50 dark:bg-red-900/20">
+                <div className="text-2xl font-medium text-red-700 dark:text-red-400">
+                  {summary.declined}
+                </div>
+                <div className="text-sm text-red-600 dark:text-red-500">
+                  Declined
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </PageTransition>
 
@@ -173,25 +240,32 @@ export const AvailabilityPage: React.FC = () => {
 
       <PageTransition delay={200}>
         <div className="space-y-0">
-        {availabilities?.length === 0 ? (
+        {filteredAvailabilities.length === 0 ? (
           <div className="py-16 text-center text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">
-            No availability records yet
+            {isDeveloper ? 'No availability records yet' : 'No team availability records yet'}
           </div>
         ) : (
-          availabilities?.map((availability, index) => (
+          filteredAvailabilities.map((availability, index) => (
             <div
               key={availability.id}
               className={`py-8 grid grid-cols-2 gap-8 ${
-                index !== availabilities.length - 1 ? 'border-b border-notion-border-light dark:border-notion-border-dark' : ''
+                index !== filteredAvailabilities.length - 1 ? 'border-b border-notion-border-light dark:border-notion-border-dark' : ''
               }`}
             >
               <div>
                 <h3 className="text-lg font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark mb-1">
                   {getTypeLabel(availability.type)}
                 </h3>
-                <p className="text-sm text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark capitalize">
-                  {availability.status}
-                </p>
+                <div className="space-y-1">
+                  <p className="text-sm text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark capitalize">
+                    {availability.status}
+                  </p>
+                  {isApprover && (
+                    <p className="text-xs text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">
+                      User ID: {availability.user_id}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div className="space-y-3">
@@ -209,7 +283,7 @@ export const AvailabilityPage: React.FC = () => {
                   </p>
                 )}
 
-                {availability.status === 'pending' && (
+                {availability.status === 'pending' && isApprover && (
                   <div className="flex gap-3 pt-2">
                     <button
                       onClick={() => approveAvailability.mutate(availability.id)}
