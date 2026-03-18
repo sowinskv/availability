@@ -1,8 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAvailability } from '../hooks/useAvailability';
+import { useModal } from '../hooks/useModal';
 
 export const ApprovalsPage: React.FC = () => {
+  const navigate = useNavigate();
   const { availabilities, approveAvailability, declineAvailability } = useAvailability();
+  const { showAlert, ModalComponent } = useModal();
 
   const pendingApprovals = availabilities?.filter(a => a.status === 'pending') || [];
   const resolvedApprovals = availabilities?.filter(a => a.status !== 'pending') || [];
@@ -20,7 +24,9 @@ export const ApprovalsPage: React.FC = () => {
   };
 
   return (
-    <div className="h-full bg-white">
+    <>
+      {ModalComponent}
+      <div className="h-full bg-white">
       {/* Header */}
       <div className="border-b border-[#e5e5e5] px-12 py-6">
         <div className="flex items-center justify-between">
@@ -31,10 +37,16 @@ export const ApprovalsPage: React.FC = () => {
             <h1 className="text-2xl font-normal text-[#000000]">Approvals</h1>
           </div>
           <div className="flex items-center gap-3">
-            <button className="px-4 py-2 text-sm text-[#666666] hover:text-[#000000] transition-colors uppercase tracking-wide">
+            <button
+              onClick={() => showAlert('Search functionality coming soon!', 'Feature Not Available')}
+              className="px-4 py-2 text-sm text-[#666666] hover:text-[#000000] transition-colors uppercase tracking-wide"
+            >
               SEARCH
             </button>
-            <button className="px-6 py-2.5 bg-[#000000] text-white text-sm font-medium hover:opacity-90 transition-opacity uppercase tracking-wide">
+            <button
+              onClick={() => navigate('/app/availability')}
+              className="px-6 py-2.5 bg-[#000000] text-white text-sm font-medium hover:opacity-90 transition-opacity uppercase tracking-wide"
+            >
               + LOG AVAILABILITY
             </button>
           </div>
@@ -140,5 +152,6 @@ export const ApprovalsPage: React.FC = () => {
         )}
       </div>
     </div>
+    </>
   );
 };

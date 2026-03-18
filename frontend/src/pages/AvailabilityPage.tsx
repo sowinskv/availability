@@ -82,10 +82,16 @@ export const AvailabilityPage: React.FC = () => {
             <h1 className="text-2xl font-normal text-[#000000]">My Availability</h1>
           </div>
           <div className="flex items-center gap-3">
-            <button className="px-4 py-2 text-sm text-[#666666] hover:text-[#000000] transition-colors uppercase tracking-wide">
+            <button
+              onClick={() => showAlert('Search functionality coming soon!', 'Feature Not Available')}
+              className="px-4 py-2 text-sm text-[#666666] hover:text-[#000000] transition-colors uppercase tracking-wide"
+            >
               SEARCH
             </button>
-            <button className="px-6 py-2.5 bg-[#000000] text-white text-sm font-medium hover:opacity-90 transition-opacity uppercase tracking-wide">
+            <button
+              onClick={() => setActiveTab('voice')}
+              className="px-6 py-2.5 bg-[#000000] text-white text-sm font-medium hover:opacity-90 transition-opacity uppercase tracking-wide"
+            >
               + LOG AVAILABILITY
             </button>
           </div>

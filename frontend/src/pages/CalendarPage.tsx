@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAvailability } from '../hooks/useAvailability';
 import { useAuth } from '../contexts/AuthContext';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, startOfWeek, endOfWeek, parseISO, isToday } from 'date-fns';
@@ -17,6 +18,7 @@ interface AvailabilityBlock {
 }
 
 export const CalendarPage: React.FC = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [currentDate, setCurrentDate] = useState(new Date());
   const { availabilities, isLoading, createAvailability } = useAvailability();
@@ -201,7 +203,10 @@ export const CalendarPage: React.FC = () => {
                 selectedMembers={selectedTeamMembers}
                 onSelectionChange={setSelectedTeamMembers}
               />
-              <button className="px-4 py-2 text-sm text-[#666666] hover:text-[#000000] transition-colors uppercase tracking-wide">
+              <button
+                onClick={() => showAlert('Search functionality coming soon!', 'Feature Not Available')}
+                className="px-4 py-2 text-sm text-[#666666] hover:text-[#000000] transition-colors uppercase tracking-wide"
+              >
                 SEARCH
               </button>
             </div>

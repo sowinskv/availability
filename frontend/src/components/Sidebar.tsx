@@ -19,7 +19,7 @@ export const Sidebar: React.FC = () => {
       isCollapsed ? 'w-[72px]' : 'w-[280px]'
     }`}>
       {/* Logo/Brand */}
-      <div className={`pt-8 pb-6 border-b border-[#e5e5e5] transition-all duration-300 ${
+      <div className={`py-6 transition-all duration-300 ${
         isCollapsed ? 'px-4' : 'px-6'
       }`}>
         <Link to="/app" className="block">
