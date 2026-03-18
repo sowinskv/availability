@@ -203,12 +203,6 @@ export const CalendarPage: React.FC = () => {
                 selectedMembers={selectedTeamMembers}
                 onSelectionChange={setSelectedTeamMembers}
               />
-              <button
-                onClick={() => showAlert('Search functionality coming soon!', 'Feature Not Available')}
-                className="px-4 py-2 text-sm text-[#666666] hover:text-[#000000] transition-colors uppercase tracking-wide"
-              >
-                SEARCH
-              </button>
             </div>
           </div>
         </div>

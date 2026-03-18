@@ -82,7 +82,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplet
       <div className="flex flex-col items-center">
         <button
           onClick={isRecording ? stopRecording : startRecording}
-          className="group relative"
+          className="group relative focus:outline-none"
         >
           {isRecording ? (
             <div className="flex flex-col items-center gap-4">

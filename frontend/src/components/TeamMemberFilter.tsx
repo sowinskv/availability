@@ -62,7 +62,7 @@ export const TeamMemberFilter: React.FC<TeamMemberFilterProps> = ({
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2 text-sm text-[#666666] hover:text-[#000000] border border-[#e5e5e5] hover:border-[#000000] transition-colors uppercase tracking-wide"
+        className="flex items-center gap-2 px-4 py-2 text-sm text-[#666666] hover:text-[#000000] border border-[#e5e5e5] hover:border-[#000000] transition-colors uppercase tracking-wide focus:outline-none"
       >
         {getButtonText()}
         <ChevronDown size={16} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
@@ -74,13 +74,13 @@ export const TeamMemberFilter: React.FC<TeamMemberFilterProps> = ({
           <div className="px-4 py-3 border-b border-[#e5e5e5] flex items-center justify-between">
             <button
               onClick={handleSelectAll}
-              className="text-xs text-[#666666] hover:text-[#000000] transition-colors uppercase tracking-wide"
+              className="text-xs text-[#666666] hover:text-[#000000] transition-colors uppercase tracking-wide focus:outline-none"
             >
               Select All
             </button>
             <button
               onClick={handleClearAll}
-              className="text-xs text-[#666666] hover:text-[#000000] transition-colors uppercase tracking-wide"
+              className="text-xs text-[#666666] hover:text-[#000000] transition-colors uppercase tracking-wide focus:outline-none"
             >
               Clear All
             </button>
@@ -97,7 +97,7 @@ export const TeamMemberFilter: React.FC<TeamMemberFilterProps> = ({
                   type="checkbox"
                   checked={selectedMembers.includes(member.id)}
                   onChange={() => handleToggleMember(member.id)}
-                  className="w-4 h-4 text-[#000000] border-[#e5e5e5] focus:ring-0 focus:ring-offset-0"
+                  className="w-4 h-4 text-[#000000] border-[#e5e5e5] focus:ring-0 focus:ring-offset-0 focus:outline-none"
                 />
                 <div className="flex items-center gap-2 flex-1">
                   <div className="w-6 h-6 bg-[#000000] text-white flex items-center justify-center text-xs font-semibold">

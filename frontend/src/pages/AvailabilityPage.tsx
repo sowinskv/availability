@@ -81,29 +81,15 @@ export const AvailabilityPage: React.FC = () => {
             <div className="text-[10px] text-[#999999] font-medium tracking-wider uppercase mb-1">OUR TEAM</div>
             <h1 className="text-2xl font-normal text-[#000000]">My Availability</h1>
           </div>
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => showAlert('Search functionality coming soon!', 'Feature Not Available')}
-              className="px-4 py-2 text-sm text-[#666666] hover:text-[#000000] transition-colors uppercase tracking-wide"
-            >
-              SEARCH
-            </button>
-            <button
-              onClick={() => setActiveTab('voice')}
-              className="px-6 py-2.5 bg-[#000000] text-white text-sm font-medium hover:opacity-90 transition-opacity uppercase tracking-wide"
-            >
-              + LOG AVAILABILITY
-            </button>
-          </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-[#e5e5e5] px-12">
+      <div className="px-12">
         <div className="flex gap-8">
           <button
             onClick={() => setActiveTab('voice')}
-            className={`py-4 text-sm font-medium uppercase tracking-wide relative ${
+            className={`py-4 text-sm font-medium uppercase tracking-wide relative focus:outline-none ${
               activeTab === 'voice'
                 ? 'text-[#000000] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#000000]'
                 : 'text-[#999999] hover:text-[#666666]'
@@ -113,7 +99,7 @@ export const AvailabilityPage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('manual')}
-            className={`py-4 text-sm font-medium uppercase tracking-wide relative ${
+            className={`py-4 text-sm font-medium uppercase tracking-wide relative focus:outline-none ${
               activeTab === 'manual'
                 ? 'text-[#000000] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#000000]'
                 : 'text-[#999999] hover:text-[#666666]'
@@ -125,24 +111,35 @@ export const AvailabilityPage: React.FC = () => {
       </div>
 
       {/* Content */}
-      <div className="px-12 py-8 flex items-center justify-center min-h-[calc(100vh-200px)]">
-        {activeTab === 'voice' ? (
-          <div className="max-w-2xl mx-auto">
-            <div className="mb-6 text-center">
-              <div className="text-[10px] text-[#999999] font-medium tracking-wider uppercase mb-2">
-                RECORD YOUR MESSAGE — MAX 2 MIN
-              </div>
+      <div className="px-12 py-8 flex items-center justify-center min-h-[calc(100vh-200px)] relative overflow-hidden">
+        <div
+          className={`max-w-2xl mx-auto w-full transition-all duration-300 ${
+            activeTab === 'voice'
+              ? 'opacity-100 translate-x-0'
+              : 'opacity-0 translate-x-[-20px] absolute pointer-events-none'
+          }`}
+        >
+          <div className="mb-6 text-center">
+            <div className="text-[10px] text-[#999999] font-medium tracking-wider uppercase mb-2">
+              RECORD YOUR MESSAGE — MAX 2 MIN
             </div>
-            <VoiceRecorder onRecordingComplete={handleRecordingComplete} />
           </div>
-        ) : (
-          <div className="max-w-2xl mx-auto">
-            <div className="mb-6">
-              <div className="text-[10px] text-[#999999] font-medium tracking-wider uppercase mb-2">
-                ENTER AVAILABILITY DETAILS
-              </div>
+          <VoiceRecorder onRecordingComplete={handleRecordingComplete} />
+        </div>
+
+        <div
+          className={`max-w-2xl mx-auto w-full transition-all duration-300 ${
+            activeTab === 'manual'
+              ? 'opacity-100 translate-x-0'
+              : 'opacity-0 translate-x-[20px] absolute pointer-events-none'
+          }`}
+        >
+          <div className="mb-6">
+            <div className="text-[10px] text-[#999999] font-medium tracking-wider uppercase mb-2">
+              ENTER AVAILABILITY DETAILS
             </div>
-            <form onSubmit={handleManualSubmit} className="space-y-6">
+          </div>
+          <form onSubmit={handleManualSubmit} className="space-y-6">
               <div>
                 <label className="block text-[10px] text-[#999999] font-medium tracking-wider uppercase mb-2">
                   TYPE OF ABSENCE
@@ -215,14 +212,13 @@ export const AvailabilityPage: React.FC = () => {
               <div className="pt-6">
                 <button
                   type="submit"
-                  className="px-8 py-3 bg-[#000000] text-white text-sm font-medium hover:opacity-90 transition-opacity uppercase tracking-wide"
+                  className="px-8 py-3 bg-[#000000] text-white text-sm font-medium hover:opacity-90 transition-opacity uppercase tracking-wide focus:outline-none"
                 >
                   SUBMIT FOR APPROVAL
                 </button>
               </div>
             </form>
-          </div>
-        )}
+        </div>
       </div>
 
     </div>
