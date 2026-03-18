@@ -1,102 +1,202 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Calendar, FileText, CheckSquare, Users, Moon, Sun, LogOut, Clock } from 'lucide-react';
-import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
-
-interface NavItem {
-  path: string;
-  label: string;
-  icon: React.ReactNode;
-}
-
-const navItems: NavItem[] = [
-  { path: '/app', label: 'Home', icon: <Users size={18} /> },
-  { path: '/app/availability', label: 'Availability', icon: <Clock size={18} /> },
-  { path: '/app/calendar', label: 'Calendar', icon: <Calendar size={18} /> },
-  { path: '/app/requirements', label: 'Requirements', icon: <FileText size={18} /> },
-  { path: '/app/tasks', label: 'Tasks', icon: <CheckSquare size={18} /> },
-  { path: '/app/allocations', label: 'Allocations', icon: <Users size={18} /> },
-];
+import { ChevronLeft, ChevronRight, Calendar, CalendarDays, CheckCircle, Settings, Bell, Plug } from 'lucide-react';
+import { useAvailability } from '../hooks/useAvailability';
 
 export const Sidebar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useTheme();
   const { logout, user } = useAuth();
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const { availabilities } = useAvailability();
+
+  const isActive = (path: string) => location.pathname === path;
+  const pendingCount = availabilities?.filter(a => a.status === 'pending').length || 0;
 
   return (
-    <aside className="w-64 h-screen bg-notion-bg-light dark:bg-notion-bg-dark border-r border-notion-border-light dark:border-notion-border-dark flex flex-col">
+    <aside className={`h-screen bg-white border-r border-[#e5e5e5] flex flex-col transition-all duration-300 ${
+      isCollapsed ? 'w-[72px]' : 'w-[280px]'
+    }`}>
       {/* Logo/Brand */}
-      <div className="px-4 py-6">
-        <Link to="/app" className="flex items-center gap-2 group">
-          <span className="text-notion-text-primary-light dark:text-notion-text-primary-dark font-semibold text-sm group-hover:opacity-70 transition-opacity">
-            Our process tool
-          </span>
+      <div className={`pt-8 pb-6 border-b border-[#e5e5e5] transition-all duration-300 ${
+        isCollapsed ? 'px-4' : 'px-6'
+      }`}>
+        <Link to="/app" className="block">
+          {isCollapsed ? (
+            <div className="w-10 h-10 bg-[#000000] text-white flex items-center justify-center text-base font-semibold">
+              F
+            </div>
+          ) : (
+            <>
+              <div className="text-[#000000] font-semibold text-lg tracking-tight">FAST</div>
+              <div className="text-[#999999] text-xs tracking-wide mt-0.5">PROCESS TOOL</div>
+            </>
+          )}
         </Link>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-2 py-2 space-y-0.5">
-        {navItems.map((item) => {
-          const isActive = location.pathname === item.path || (item.path === '/' && location.pathname === '/');
-
-          return (
+      <nav className={`flex-1 space-y-6 py-6 overflow-y-auto transition-all duration-300 ${
+        isCollapsed ? 'px-2' : 'px-4'
+      }`}>
+        {/* Workspace Section */}
+        <div>
+          {!isCollapsed && (
+            <div className="px-2 mb-2">
+              <div className="text-[10px] text-[#999999] font-medium tracking-wider uppercase">Workspace</div>
+            </div>
+          )}
+          <div className="space-y-0.5">
             <Link
-              key={item.path}
-              to={item.path}
-              className={`
-                flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-all
-                ${
-                  isActive
-                    ? 'bg-notion-hover-light dark:bg-notion-hover-dark text-notion-text-primary-light dark:text-notion-text-primary-dark'
-                    : 'text-notion-text-secondary-light dark:text-notion-text-secondary-dark hover:bg-notion-hover-light dark:hover:bg-notion-hover-dark'
-                }
-              `}
+              to="/app/availability"
+              className={`flex items-center gap-3 px-3 py-2.5 text-sm rounded transition-colors ${
+                isActive('/app/availability')
+                  ? 'text-[#000000] font-medium bg-[#f5f5f5]'
+                  : 'text-[#666666] hover:text-[#000000] hover:bg-[#fafafa]'
+              }`}
+              title={isCollapsed ? 'My Availability' : ''}
             >
-              <span className={isActive ? 'opacity-100' : 'opacity-50'}>{item.icon}</span>
-              <span>{item.label}</span>
+              <div className="w-5 h-5 flex items-center justify-center">
+                <Calendar size={18} className="text-current" />
+              </div>
+              {!isCollapsed && <span>MY AVAILABILITY</span>}
             </Link>
-          );
-        })}
+            <Link
+              to="/app/calendar"
+              className={`flex items-center gap-3 px-3 py-2.5 text-sm rounded transition-colors ${
+                isActive('/app/calendar')
+                  ? 'text-[#000000] font-medium bg-[#f5f5f5]'
+                  : 'text-[#666666] hover:text-[#000000] hover:bg-[#fafafa]'
+              }`}
+              title={isCollapsed ? 'Team Overview' : ''}
+            >
+              <div className="w-5 h-5 flex items-center justify-center">
+                <CalendarDays size={18} className="text-current" />
+              </div>
+              {!isCollapsed && <span>TEAM OVERVIEW</span>}
+            </Link>
+            <Link
+              to="/app/approvals"
+              className={`flex items-center justify-between px-3 py-2.5 text-sm rounded transition-colors ${
+                isActive('/app/approvals')
+                  ? 'text-[#000000] font-medium bg-[#f5f5f5]'
+                  : 'text-[#666666] hover:text-[#000000] hover:bg-[#fafafa]'
+              }`}
+              title={isCollapsed ? 'Approvals' : ''}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <CheckCircle size={18} className="text-current" />
+                </div>
+                {!isCollapsed && <span>APPROVALS</span>}
+              </div>
+              {pendingCount > 0 && !isCollapsed && (
+                <span className="w-5 h-5 bg-blue-600 text-white text-[10px] font-semibold rounded flex items-center justify-center">
+                  {pendingCount}
+                </span>
+              )}
+              {pendingCount > 0 && isCollapsed && (
+                <span className="absolute top-2 right-2 w-2 h-2 bg-blue-600 rounded-full"></span>
+              )}
+            </Link>
+          </div>
+        </div>
+
+        {/* Settings Section */}
+        <div>
+          {!isCollapsed && (
+            <div className="px-2 mb-2">
+              <div className="text-[10px] text-[#999999] font-medium tracking-wider uppercase">Settings</div>
+            </div>
+          )}
+          <div className="space-y-0.5">
+            <Link
+              to="/app/preferences"
+              className={`flex items-center gap-3 px-3 py-2.5 text-sm rounded transition-colors ${
+                isActive('/app/preferences')
+                  ? 'text-[#000000] font-medium bg-[#f5f5f5]'
+                  : 'text-[#666666] hover:text-[#000000] hover:bg-[#fafafa]'
+              }`}
+              title={isCollapsed ? 'Preferences' : ''}
+            >
+              <div className="w-5 h-5 flex items-center justify-center">
+                <Settings size={18} className="text-current" />
+              </div>
+              {!isCollapsed && <span>PREFERENCES</span>}
+            </Link>
+            <Link
+              to="/app/notifications"
+              className={`flex items-center gap-3 px-3 py-2.5 text-sm rounded transition-colors ${
+                isActive('/app/notifications')
+                  ? 'text-[#000000] font-medium bg-[#f5f5f5]'
+                  : 'text-[#666666] hover:text-[#000000] hover:bg-[#fafafa]'
+              }`}
+              title={isCollapsed ? 'Notifications' : ''}
+            >
+              <div className="w-5 h-5 flex items-center justify-center">
+                <Bell size={18} className="text-current" />
+              </div>
+              {!isCollapsed && <span>NOTIFICATIONS</span>}
+            </Link>
+            <Link
+              to="/app/integrations"
+              className={`flex items-center gap-3 px-3 py-2.5 text-sm rounded transition-colors ${
+                isActive('/app/integrations') || location.pathname.startsWith('/app/integrations/')
+                  ? 'text-[#000000] font-medium bg-[#f5f5f5]'
+                  : 'text-[#666666] hover:text-[#000000] hover:bg-[#fafafa]'
+              }`}
+              title={isCollapsed ? 'Integrations' : ''}
+            >
+              <div className="w-5 h-5 flex items-center justify-center">
+                <Plug size={18} className="text-current" />
+              </div>
+              {!isCollapsed && <span>INTEGRATIONS</span>}
+            </Link>
+          </div>
+        </div>
       </nav>
 
-      {/* Footer */}
-      <div className="px-2 py-4 border-t border-notion-border-light dark:border-notion-border-dark space-y-1">
+      {/* Toggle Button */}
+      <div className="border-t border-[#e5e5e5]">
         <button
-          onClick={toggleTheme}
-          className="w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark hover:bg-notion-hover-light dark:hover:bg-notion-hover-dark transition-all"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="w-full p-4 flex items-center justify-center text-[#666666] hover:text-[#000000] hover:bg-[#fafafa] transition-colors"
+          title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
-          {theme === 'light' ? <Moon size={16} className="opacity-50" /> : <Sun size={16} className="opacity-50" />}
-          <span>{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
+          {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
         </button>
+      </div>
 
+      {/* User Footer */}
+      <div className={`border-t border-[#e5e5e5] transition-all duration-300 ${
+        isCollapsed ? 'px-4 py-4' : 'px-6 py-6'
+      }`}>
         {user && (
-          <div className="px-3 py-2 space-y-1">
-            <div className="text-sm font-medium text-notion-text-primary-light dark:text-notion-text-primary-dark">
-              {user.name}
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs px-2 py-0.5 bg-black dark:bg-white text-white dark:text-black rounded uppercase font-medium">
-                {user.role}
-              </span>
-              <span className="text-xs text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">
-                {user.email}
-              </span>
-            </div>
-          </div>
+          <>
+            {isCollapsed ? (
+              <div className="w-10 h-10 bg-[#000000] text-white flex items-center justify-center text-sm font-semibold rounded">
+                {user.name.split(' ').map(n => n[0]).join('')}
+              </div>
+            ) : (
+              <div className="mb-3">
+                <div className="text-sm font-medium text-[#000000] mb-0.5">{user.name}</div>
+                <div className="text-xs text-[#999999] uppercase">{user.role}</div>
+              </div>
+            )}
+          </>
         )}
-
-        <button
-          onClick={() => {
-            logout();
-            navigate('/');
-          }}
-          className="w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark hover:bg-notion-hover-light dark:hover:bg-notion-hover-dark transition-all"
-        >
-          <LogOut size={16} className="opacity-50" />
-          <span>Sign Out</span>
-        </button>
+        {!isCollapsed && (
+          <button
+            onClick={() => {
+              logout();
+              navigate('/');
+            }}
+            className="text-xs text-[#666666] hover:text-[#000000] transition-colors uppercase tracking-wide"
+          >
+            Sign Out
+          </button>
+        )}
       </div>
     </aside>
   );

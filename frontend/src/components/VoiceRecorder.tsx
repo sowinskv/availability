@@ -1,11 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { Mic, StopCircle, Upload } from 'lucide-react';
+import { useModal } from '../hooks/useModal';
 
 interface VoiceRecorderProps {
   onRecordingComplete: (audioBlob: Blob) => void;
 }
 
 export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplete }) => {
+  const { showAlert, ModalComponent } = useModal();
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -41,7 +43,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplet
       }, 1000);
     } catch (error) {
       console.error('Error accessing microphone:', error);
-      alert('Could not access microphone. Please check permissions.');
+      showAlert('Could not access microphone. Please check permissions.', 'Microphone Error');
     }
   };
 
@@ -64,42 +66,68 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onRecordingComplet
   };
 
   return (
-    <div className="p-6 border border-notion-border-light dark:border-notion-border-dark rounded-lg">
-      <div className="flex items-center gap-4 mb-4">
-        <button
-          onClick={isRecording ? stopRecording : startRecording}
-          className={`p-4 rounded-full transition-all ${
-            isRecording
-              ? 'bg-black dark:bg-white'
-              : 'border-2 border-black dark:border-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black'
-          }`}
-        >
-          {isRecording ? (
-            <StopCircle size={24} className="text-white dark:text-black" />
-          ) : (
-            <Mic size={24} className="text-black dark:text-white" />
-          )}
-        </button>
-
-        <div className="flex-1">
-          {isRecording ? (
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-              <span className="text-sm text-notion-text-primary-light dark:text-notion-text-primary-dark">
-                Recording: {formatTime(recordingTime)}
-              </span>
-            </div>
-          ) : (
-            <p className="text-sm text-notion-text-secondary-light dark:text-notion-text-secondary-dark">
-              Click to start recording your availability
-            </p>
-          )}
-        </div>
+    <>
+      {ModalComponent}
+      <div className="py-12">
+      {/* Example text */}
+      <div className="text-center mb-12">
+        <p className="text-[#999999] italic text-sm">
+          "I'll be working remotely on Tuesday from 9 to 1,
+          <br />
+          dentist in the afternoon."
+        </p>
       </div>
 
-      <p className="text-xs text-notion-text-tertiary-light dark:text-notion-text-tertiary-dark">
-        Speak naturally - include dates, type (vacation, sick leave), and any details.
-      </p>
+      {/* Record button */}
+      <div className="flex flex-col items-center">
+        <button
+          onClick={isRecording ? stopRecording : startRecording}
+          className="group relative"
+        >
+          {isRecording ? (
+            <div className="flex flex-col items-center gap-4">
+              {/* Waveform indicator */}
+              <div className="flex items-center gap-1 h-8">
+                {[...Array(5)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-1 h-6 bg-blue-600 rounded-full animate-wave origin-center"
+                    style={{
+                      animationDelay: `${i * 0.1}s`,
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Timer */}
+              <div className="text-4xl font-light text-[#000000] tabular-nums">
+                {formatTime(recordingTime)}
+              </div>
+
+              {/* Stop button */}
+              <div className="w-24 h-24 bg-blue-600 text-white flex items-center justify-center text-lg font-medium cursor-pointer hover:bg-blue-700 transition-colors">
+                stop
+              </div>
+
+              <div className="text-[10px] text-[#999999] font-medium tracking-wider uppercase mt-2">
+                TAP TO STOP
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-4">
+              {/* Rec button */}
+              <div className="w-24 h-24 bg-[#000000] text-white flex items-center justify-center text-lg font-medium cursor-pointer hover:opacity-90 transition-opacity">
+                rec
+              </div>
+
+              <div className="text-[10px] text-[#999999] font-medium tracking-wider uppercase mt-2">
+                TAP TO RECORD
+              </div>
+            </div>
+          )}
+        </button>
+      </div>
     </div>
+    </>
   );
 };

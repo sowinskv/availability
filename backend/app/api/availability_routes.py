@@ -1,7 +1,7 @@
 """
 Availability API routes.
 """
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from typing import List
 from uuid import UUID
@@ -68,7 +68,7 @@ async def create_availability(
 @router.post("/voice", response_model=AvailabilityResponse)
 async def create_availability_from_voice(
     audio_file: UploadFile = File(...),
-    user_id: UUID = None,
+    user_id: UUID = Form(...),
     db: Session = Depends(get_db),
     transcription_service: VoiceTranscriptionService = Depends(get_transcription_service)
 ):

@@ -28,8 +28,11 @@ export const useAvailability = (userId?: string) => {
   });
 
   const createAvailability = useMutation({
-    mutationFn: async (data: { start_date: string; end_date: string; hours_per_day: number; type: string }) => {
-      const response = await axios.post(`${API_BASE}/availability`, data);
+    mutationFn: async (data: { start_date: string; end_date: string; hours_per_day: number; type: string; user_id: string }) => {
+      const { user_id, ...availabilityData } = data;
+      const response = await axios.post(`${API_BASE}/availability`, availabilityData, {
+        params: { user_id }
+      });
       return response.data;
     },
     onSuccess: () => {
@@ -38,9 +41,10 @@ export const useAvailability = (userId?: string) => {
   });
 
   const createFromVoice = useMutation({
-    mutationFn: async (audioBlob: Blob) => {
+    mutationFn: async ({ audioBlob, userId }: { audioBlob: Blob; userId: string }) => {
       const formData = new FormData();
       formData.append('audio_file', audioBlob, 'recording.wav');
+      formData.append('user_id', userId);
 
       const response = await axios.post(`${API_BASE}/availability/voice`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
