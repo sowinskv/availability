@@ -11,8 +11,8 @@ interface Availability {
   hours_per_day: number;
   status: string;
   type: string;
-  transcription_text?: string;
-  transcription_confidence?: number;
+  transcription_text?: string | null;
+  transcription_confidence?: number | null;
 }
 
 export const useAvailability = (userId?: string) => {
@@ -22,7 +22,7 @@ export const useAvailability = (userId?: string) => {
     queryKey: ['availabilities', userId],
     queryFn: async () => {
       const params = userId ? { user_id: userId } : {};
-      const response = await axios.get<Availability[]>(`${API_BASE}/availability`, { params });
+      const response = await axios.get<Availability[]>(`${API_BASE}/availability/`, { params });
       return response.data;
     },
   });
@@ -30,7 +30,7 @@ export const useAvailability = (userId?: string) => {
   const createAvailability = useMutation({
     mutationFn: async (data: { start_date: string; end_date: string; hours_per_day: number; type: string; user_id: string }) => {
       const { user_id, ...availabilityData } = data;
-      const response = await axios.post(`${API_BASE}/availability`, availabilityData, {
+      const response = await axios.post(`${API_BASE}/availability/`, availabilityData, {
         params: { user_id }
       });
       return response.data;
@@ -46,7 +46,7 @@ export const useAvailability = (userId?: string) => {
       formData.append('audio_file', audioBlob, 'recording.wav');
       formData.append('user_id', userId);
 
-      const response = await axios.post(`${API_BASE}/availability/voice`, formData, {
+      const response = await axios.post(`${API_BASE}/availability/voice/`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       return response.data;
@@ -58,7 +58,7 @@ export const useAvailability = (userId?: string) => {
 
   const approveAvailability = useMutation({
     mutationFn: async (availabilityId: string) => {
-      const response = await axios.patch(`${API_BASE}/availability/${availabilityId}/approve`);
+      const response = await axios.patch(`${API_BASE}/availability/${availabilityId}/approve/`);
       return response.data;
     },
     onSuccess: () => {
@@ -68,7 +68,7 @@ export const useAvailability = (userId?: string) => {
 
   const declineAvailability = useMutation({
     mutationFn: async (availabilityId: string) => {
-      const response = await axios.patch(`${API_BASE}/availability/${availabilityId}/decline`);
+      const response = await axios.patch(`${API_BASE}/availability/${availabilityId}/decline/`);
       return response.data;
     },
     onSuccess: () => {

@@ -28,8 +28,8 @@ class AvailabilityCreate(BaseModel):
 
 
 class AvailabilityResponse(BaseModel):
-    id: str
-    user_id: str
+    id: UUID
+    user_id: UUID
     start_date: date
     end_date: date
     hours_per_day: float
